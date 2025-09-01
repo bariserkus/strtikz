@@ -1,6 +1,6 @@
 \pgfkeys{
  /framestructure/.is family, /framestructure,
-  default/.style = {
+  default/.style = {%
   number of storys = 5,
   show open story=0,
   left story=0,
@@ -1183,9 +1183,9 @@ for \ibot in {2,...,{\nbotpin}}{
 	{
 		\tikzmath{\substextnum=\istory-\deflstart;}
 		\draw [arrows={-[length=5pt, width=4pt]>}, line width=1pt]
-		(\x{\startcol}+\deflect{\istory}-\toparrlen,\y{\istory}) --
+		(\x{\startcol}+\deflect{\istory}*\showdefl-\toparrlen,\y{\istory}) --
 			node[anchor=south, pos=0.4, inner sep=1pt]{$F_{\substextnum}$}		
-		(\x{\startcol}+\deflect{\istory}-\latloadshift, \y{\istory});
+		(\x{\startcol}+\deflect{\istory}*\showdefl-\latloadshift, \y{\istory});
 	}
 }{;}
 }{;}
