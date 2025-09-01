@@ -26,15 +26,21 @@
   support width = 0.3cm,
   support height = 0.15cm,
   support line thickness = 1.5pt,
+  support line color=black,
   support fill color=gray!65,
   show supports = 1,
   number of isolators = 4,
   isolator width = 0.3cm,
   isolator thickness = 0.2cm,
   isolator line thickness = 1.5pt,
+  isolator line color=black,
+  isolator fill color=gray,
   isolator shift = 0,
   isolator shift distance = 0.2cm,
-  isolation deflection ratio=1.0,
+  isolator floor line thickness=1pt,
+  isolator floor line color=black,
+  isolator floor fill color=gray,
+  isolator deflection ratio=1.0,
   foundation thickness = 0.5cm,
   foundation side width = 1cm,
   show mass = 1,
@@ -327,15 +333,21 @@
   support width/.store in = \supportwidth,
   support height/.store in = \supportheight,
   support line thickness/.store in = \baselinet,
+  support line color/.store in = \supportlinecolor,
   support fill color/.store in=\supportfillcolor,
   show supports/.store in = \showsupports,
   number of isolators/.store in = \numberofisolators,
   isolator width/.store in = \isolationwidth,
   isolator thickness/.store in = \isolationdepth,
   isolator line thickness/.store in = \isolinet,
+  isolator line color/.store in=\isolinecolor,
+  isolator fill color/.store in=\isofillcolor,
   isolator shift/.store in = \isoshiftyn,
   isolator shift distance/.store in = \isoshift,
-  isolation deflection ratio/.store in=\isodeflratio,
+  isolator deflection ratio/.store in=\isodeflratio,
+  isolator floor line thickness/.store in=\isofloorlinethk,
+  isolator floor line color/.store in=\isofloorlinecolor,
+  isolator floor fill color/.store in=\isofloorfillcolor,
   foundation thickness/.store in = \foundationdepth,
   foundation side width/.store in = \foundsidew,
   show mass/.store in = \showmass,
@@ -1342,16 +1354,7 @@ axial support shade color= \paxialsuppshadecol,]}
 	}{}
 	
 	
-	%%% Retaining walls and mat foundations
-	\ifthenelse{\NOT \subfloors=0}{
-	\filldraw[line width=\baselinet, fill=\supportfillcolor]
-	(\basewallstartx,\leftwallh) -- ++(\supportwidth,0)
-	-- ++(0,-\leftwallh) -- ++(\buildingwidth,0)
-	-- ++(0,\rightwallh) -- ++(\supportwidth,0)
-	-- ++(0,-\rightwallh)-- ++(0,-\supportheight)
-	-- (\basewallstartx,-\supportheight)
-	-- cycle;}{}
-	
+	%%% Left Wall Springs
 	\ifthenelse{\leftwshowsprings=1}{
 	\framedistributedspring[startx = \basewallstartx,
 	starty = -\supportheight,
@@ -1379,6 +1382,7 @@ axial support shade color= \paxialsuppshadecol,]}
 	show support shade=\leftwshowsuppshade,
 	support shade color=\leftwsuppshadecol,]}
 	
+	%%% Right Wall Springs
 	\ifthenelse{\rightwshowsprings=1}{
 	\framedistributedspring[startx = \rightwallspringstartx,
 	starty = \rightwallspringstarty,
@@ -1406,6 +1410,7 @@ axial support shade color= \paxialsuppshadecol,]}
 	show support shade=\rightwshowsuppshade,
 	support shade color=\rightwsuppshadecol,]}
 
+	%%% Foundations Springs
 	\ifthenelse{\foundshowsprings=1}{
 	\framedistributedspring[startx = \rightwallspringendx,
 	starty = \rightwallspringendy,
@@ -1510,7 +1515,15 @@ rotation=\rightrotpin]}}
 	rotation=\bottomrotpin];}
 }{};
 
-
+	%%% Retaining walls and mat foundations
+	\ifthenelse{\NOT \subfloors=0}{
+	\filldraw[line width=\baselinet, fill=\supportfillcolor, draw=\supportlinecolor]
+	(\basewallstartx,\leftwallh) -- ++(\supportwidth,0)
+	-- ++(0,-\leftwallh) -- ++(\buildingwidth,0)
+	-- ++(0,\rightwallh) -- ++(\supportwidth,0)
+	-- ++(0,-\rightwallh)-- ++(0,-\supportheight)
+	-- (\basewallstartx,-\supportheight)
+	-- cycle;}{}
 	
 	%%%Soil-Structure Interface
 	\ifthenelse{\showssinter=1}{
@@ -1729,7 +1742,7 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 	{
 		\fill [\supportfillcolor] (\x{\j},\y{1}) +({-\supportwidth/2},-\supportheight)
 		rectangle +({\supportwidth/2},\y{1});
-		\draw [line width = \baselinet]
+		\draw [line width = \baselinet, color=\supportlinecolor]
 		(\x{\j},\y{1}) +({-\supportwidth/2},\y{1}) -- +({\supportwidth/2},\y{1});
 	}
 	\ifthenelse{\showshearwall=1}{
@@ -1737,7 +1750,7 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 		(\shearwallsupportstartx, \y{1})
 		rectangle ++(\shearwallsupportdeltax,-\supportheight);
 		
-		\draw[line width=\baselinet]
+		\draw[line width=\baselinet, color=\supportlinecolor]
 		(\shearwallsupportstartx, \y{1})
 		-- ++(\shearwallsupportdeltax,0);
 	}{}
@@ -1746,32 +1759,35 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 %% 2. Support as continuous plate
 \ifthenelse{\showsupports=2}{
 	\fill [\supportfillcolor] (\rigbasestartx, 0) rectangle (\rigbaseendx,-\supportheight);
-	\draw [line width = \baselinet] (\rigbasestartx, 0) -- (\rigbaseendx,0);
+	\draw [line width = \baselinet, color=\supportlinecolor] (\rigbasestartx, 0) -- (\rigbaseendx,0);
 }{}
 
 
 %% 3. Support as ...
 \ifthenelse{\showsupports=3}{
 	\foreach \j in {1,...,{\columnnumber}}
-	{\fill [fill=\supportfillcolor, draw=black, line width = \baselinet]
+	{\fill [fill=\supportfillcolor, draw=\supportlinecolor, line width = \baselinet]
 		(\rigbasestartx, 0) rectangle (\rigbaseendx,-\supportheight);}
 }{}
 
 
 %%% 4. Base Isolation
 \ifthenelse{\showsupports=4}{
-	\fill [fill=\supportfillcolor, draw=black, line width = \baselinet]
-	(\rigbasestartx, 0) rectangle 	(\rigbaseendx,-\supportheight);
 	
 	\foreach \j in {1,...,{\numberofisolators}}
-	{\filldraw [fill = white!20!black, draw=black, line width=\isolinet]
+	{\filldraw [fill=\isofillcolor, draw=\isolinecolor, line width=\isolinet]
 		(\xiso{\j},\isoboty) ++(-\isolationwidth/2-\isodeflx,0) -- ++(\isolationwidth,0)
 		-- ++(\isodeflx,\isolationdepth) -- ++(-\isolationwidth,0) -- cycle;}
+		
+		
+	\fill [fill=\isofloorfillcolor, draw=\isofloorlinecolor, line width = \isofloorlinethk]
+	(\rigbasestartx, 0) rectangle 	(\rigbaseendx,-\supportheight);
 	
 	\fill [fill=\supportfillcolor]
 	(\foundstartx, \foundboty) rectangle (\foundendx,\foundtopy);
-	\draw [line width = \baselinet] (\foundstartx, \foundtopy)
+	\draw [line width = \baselinet, color=\supportlinecolor] (\foundstartx, \foundtopy)
 	-- (\foundendx, \foundtopy);
+	
 }{}
 
 % Fix shear wall foundations
@@ -1780,14 +1796,14 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 		\draw[line width=\shearwalllinet, \supportfillcolor]
 		(\shearwallstartx-\shearwalllinet/2, \shearwallstarty)
 		--++(\shearwalldeltax+\shearwalllinet,0);
-		\draw[line width=\baselinet, black]
+		\draw[line width=\baselinet, color=\supportlinecolor]
 		(\shearwallstartx-\shearwalllinet/2,\y{1})
 		--++(\shearwalldeltax+\shearwalllinet,0);}}
 
 %% Fix for mat foundation
 \ifthenelse{\showsupports=5}{
 \ifthenelse{\subfloors=0}{
-	\filldraw[line width=\baselinet, fill=\supportfillcolor]
+	\filldraw[line width=\baselinet, fill=\supportfillcolor, draw=\supportlinecolor]
 	(\basewallstartx,\leftwallh) -- ++(\supportwidth,0)
 	-- ++(0,-\leftwallh) -- ++(\buildingwidth,0)
 	-- ++(0,\rightwallh) -- ++(\supportwidth,0)

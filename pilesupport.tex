@@ -208,6 +208,83 @@ int \axialshowsuppshade;
 
 
 \begin{scope}[x=1pt, y=1pt, xshift=\coordinatex, yshift=\coordinatey, rotate=0]; % Drawing everything in pt units
+	
+%% Lateral Springs
+\ifthenelse{\showhorizontalsprings=1}{
+	\framedistributedspring[startx = \pdiameter/2,
+	starty = 0cm,
+	endx = \pdiameter/2,
+	endy = -\pdepth,
+	number of springs = \verspringnumber,
+	space = \verspringspace,
+	start ratio = \verspringstartratio,
+	end ratio = \verspringendratio,
+	spring text = {},
+	text shiftx=\vertextshiftx,
+	text shifty=\vertextshifty,
+	spring length=\verspringlength,
+	spring prelength ratio=\verprelenratio,
+	spring postlength ratio=\verpostlenratio,
+	spring width=\verampl,
+	spring segment=\versegm,
+	spring scale=\verspringscale,
+	spring line thickness=\verspringthk,
+	spring color=\verspringcolor,
+	support width=\versuppwidth,
+	support depth = \versuppdepth,
+	support line thickness = \versupplinethk,
+	show support shade=\vershowsuppshade,
+	support shade color=\versuppshadecol,]}
+
+%% Vertical Springs
+\ifthenelse{\showverticalsprings=1}{
+	\framehorizontalspring[startx = -\pdiameter/2,
+	starty = -\pdepth,
+	endx = -\pdiameter/2,
+	endy = 0,
+	number of springs = \horspringnumber,
+	spring direction = \horspringdir,
+	space between springs =\horspbtwspr,
+	space = \horspringspace,
+	start ratio = \horspringstartratio,
+	end ratio = \horspringendratio,
+	spring text = {},
+	text color = black,
+	text shiftx=\hortextshiftx,
+	text shifty=\hortextshifty,
+	spring prelength ratio=\horprelenratio,
+	spring postlength ratio=\horpostlenratio,
+	spring segment=\horsegm,
+	spring width=\horsprwid,
+	spring scale=\horsprscale,
+	spring line thickness=\horsprlinethk,
+	spring color=\horsprcolor,
+	support width=\horsuppwidth,
+	support depth=\horsuppdepth,
+	support line thickness=\horsupplinethk,
+	show support shade=\horshowsuppshade,
+	support shade color=\horsuppshadecol,]}
+
+%% Axial Springs
+\ifthenelse{\showaxialspring=1}{
+	\draw[line width=\axialspringlinethk, \axialspringcolor, line join=round,
+	decorate,
+	decoration={zigzag,
+		amplitude=\axialspringwidth,
+		pre length=\axialspringprelength,
+		post length=\axialspringpostlength,
+		segment length=\axialspringsegm,}] 
+	(\axialspringx, \axialspringy) -- ++(0,-\axialspringlength);
+	
+	\fixedsupport[%
+	support width = \axialsuppwidth,
+	support depth = \axialsuppdepth,
+	line thickness = \axialsupplinethk,
+	x value = 0,
+	y value = \axialsupporty,
+	rotation = 0,
+	show shade=\axialshowsuppshade,
+	shade color=\axialsuppshadecol,]}
 
 \fill[fill=gray](-\pdiameter/2, 0) rectangle (+\pdiameter/2, -\pdepth);
 \draw[line width=\plinethick]
@@ -227,82 +304,7 @@ int \axialshowsuppshade;
 \draw[line width=\blinethick, \blinecolor, \blinetype]
 (-\blinestartx,0) -- ++(0,-\pdepth) -- ++(\blinewidth,0) -- ++(0,\pdepth);}{}
 
-%% Lateral Springs
-\ifthenelse{\showhorizontalsprings=1}{
-\framedistributedspring[startx = \pdiameter/2,
-starty = 0cm,
-endx = \pdiameter/2,
-endy = -\pdepth,
-number of springs = \verspringnumber,
-space = \verspringspace,
-start ratio = \verspringstartratio,
-end ratio = \verspringendratio,
-spring text = {},
-text shiftx=\vertextshiftx,
-text shifty=\vertextshifty,
-spring length=\verspringlength,
-spring prelength ratio=\verprelenratio,
-spring postlength ratio=\verpostlenratio,
-spring width=\verampl,
-spring segment=\versegm,
-spring scale=\verspringscale,
-spring line thickness=\verspringthk,
-spring color=\verspringcolor,
-support width=\versuppwidth,
-support depth = \versuppdepth,
-support line thickness = \versupplinethk,
-show support shade=\vershowsuppshade,
-support shade color=\versuppshadecol,]}
 
-%% Vertical Springs
-\ifthenelse{\showverticalsprings=1}{
-\framehorizontalspring[startx = -\pdiameter/2,
-starty = -\pdepth,
-endx = -\pdiameter/2,
-endy = 0,
-number of springs = \horspringnumber,
-spring direction = \horspringdir,
-space between springs =\horspbtwspr,
-space = \horspringspace,
-start ratio = \horspringstartratio,
-end ratio = \horspringendratio,
-spring text = {},
-text color = black,
-text shiftx=\hortextshiftx,
-text shifty=\hortextshifty,
-spring prelength ratio=\horprelenratio,
-spring postlength ratio=\horpostlenratio,
-spring segment=\horsegm,
-spring width=\horsprwid,
-spring scale=\horsprscale,
-spring line thickness=\horsprlinethk,
-spring color=\horsprcolor,
-support width=\horsuppwidth,
-support depth=\horsuppdepth,
-support line thickness=\horsupplinethk,
-show support shade=\horshowsuppshade,
-support shade color=\horsuppshadecol,]}
-
-%% Axial Springs
-\ifthenelse{\showaxialspring=1}{
-\draw[line width=\axialspringlinethk, \axialspringcolor, line join=round,
-decorate,
-decoration={zigzag,
-	amplitude=\axialspringwidth,
-	pre length=\axialspringprelength,
-	post length=\axialspringpostlength,
-	segment length=\axialspringsegm,}] 
-(\axialspringx, \axialspringy) -- ++(0,-\axialspringlength);
-
-\fixedsupport[%
-support width = \axialsuppwidth,
-support depth = \axialsuppdepth,
-line thickness = \axialsupplinethk,
-x value = 0,
-y value = \axialsupporty,
-rotation = 0,
-show shade=\axialshowsuppshade,
-shade color=\axialsuppshadecol,]}
  
  
 \end{scope}
