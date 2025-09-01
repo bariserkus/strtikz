@@ -25,11 +25,11 @@
 
 
 \begin{tikzpicture}
-\draw [line width=1](0 cm, 0 cm) -- (5 cm, 5 cm);
-\framedistributedspring[startx = 0cm,
+\draw [line width=1](5 cm, 0 cm) -- (0 cm, 0 cm);
+\framedistributedspring[startx = 5cm,
 starty = 0cm,
-endx = 5cm,
-endy = 5cm,
+endx = 0cm,
+endy = 0cm,
 number of springs = 5,
 space = 0.0cm,
 start ratio = 0.02,
@@ -37,6 +37,7 @@ end ratio = 0.02,
 spring text = $\SI{10}{\kilo\newton/\meter}$,
 text shiftx=0pt,
 text shifty=0pt,
+text location=below,
 spring length=0.5cm,
 spring prelength ratio=0.2,
 spring postlength ratio=0.1,

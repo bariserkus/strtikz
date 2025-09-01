@@ -1,6 +1,8 @@
 \pgfkeys{
  /pinsupport/.is family, /pinsupport,
   default/.style = {triangle width = 0.5cm,
+  show support shade=1,
+  support shade color=gray,
   line width = 1cm,
   line depth = 0.2cm,
   line thickness = 2pt,
@@ -8,8 +10,11 @@
   x value = 0,
   y value = 0,
   show circle = 1,
-  rotation=0},
+  rotation=0,
+  },
   triangle width/.store in = \triw,
+  show support shade/.store in=\showsupportshade,
+  support shade color/.store in=\supportshadecolor,
   line width/.store in = \linew,
   line depth/.store in = \lined,
   line thickness/.store in = \linet,
@@ -24,7 +29,7 @@
 \tikzmath{
 real \triw, \linew, \lined, \xvalue, \yvalue, \radratio;
 real \rad;
-int showcircle;
+int \showcircle, \showsupportshade;
 %Conversion all units to the unit pt
 \triw  = \triw;
 \linew = \linew;
@@ -43,10 +48,15 @@ int showcircle;
 }
 \begin{scope}[x=1pt, y=1pt, xshift=\xvalue, yshift=\yvalue, rotate=\rotpin];    % Draw everything in pt units
 \draw [line join=bevel, line width = \linet] (0, 0) -- (-\triw/2, -\triw) -- (+\triw/2, -\triw) -- cycle;
-\ifthenelse{\showcircle=1}
-	{\filldraw [fill=white, line width = \linet] (0, 0) circle[radius=\rad];}
-	{;}
-\fill [gray] (-\linew/2, -\triw-\lined) rectangle (+\linew/2, -\triw);
+
+\ifthenelse{\showcircle=1}{
+	\filldraw [fill=white, line width = \linet] (0, 0) circle[radius=\rad];
+}{;}
+
+\ifthenelse{\showsupportshade=1}{
+	\fill [\supportshadecolor] (-\linew/2, -\triw-\lined) rectangle (+\linew/2, -\triw);
+}{;}
+
 \draw [line width = \linet] (-\linew/2, -\triw) -- (+\linew/2, -\triw);
 \end{scope}
 }

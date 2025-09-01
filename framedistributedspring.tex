@@ -11,6 +11,7 @@
   spring text = {},
   text shiftx=0pt,
   text shifty=0pt,
+  text location=above,
   spring length=1cm,
   spring prelength ratio=0.25,
   spring postlength ratio=0.25,
@@ -35,6 +36,7 @@
   spring text/.store in = \springtext,
   text shiftx/.store in = \textshiftx,
   text shifty/.store in = \textshifty,
+  text location/.store in = \loc,
   spring length/.store in = \springlength,
   spring prelength ratio/.store in = \prelenratio,
   spring postlength ratio/.store in = \postlenratio,
@@ -103,7 +105,6 @@ for \i in {2,...,{\springnumber-1}}{
 \springyvalue{\i} = \springyvalue{1} + (\i-1)*\springwyvalue;
 };
 \springnumbermo = \springnumber-1;
-\loc = ifthenelse(\springlength>=0,"above","below");
 %
 \supportdist=\springspace+\springlength;
 \supportdistdx=cos(90+\springangle)*\supportdist;
@@ -112,6 +113,8 @@ for \i in {1,...,{\springnumber}}{
 	\supportendx{\i} = \springxvalue{\i} + \supportdistdx;
 	\supportendy{\i} = \springyvalue{\i} + \supportdistdy;
 };
+\totalspringsupportlength=\suppdepth+\springspace+\springlength;
+%\loc = ifthenelse(\totalspringsupportlength>=0,"above","below");
 }
 
 
@@ -141,6 +144,10 @@ show shade=\showsuppshade,
 shade color=\suppshadecol,]
 
 }
+
+\path[](\springstartcoordx,\springstartcoordy) -- ++(90+\springangle:\totalspringsupportlength) --
+node[\loc,midway,sloped, xshift=\textshiftx, yshift=\textshifty, inner sep=1pt]{\springtext}
+++(\springdxf,\springdyf);
 
 \end{scope}
 }
