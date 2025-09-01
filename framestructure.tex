@@ -1112,6 +1112,7 @@ if equal(\superstorynumber,0) then {
 \botpinspace=\bottomlength/(\nbotpin-1);
 for \ibot in {2,...,{\nbotpin}}{
 	\botpinx{\ibot}=\botpinx{1}+(\ibot-1)*\botpinspace;};
+%%%
 }   %End tikzmath
 
 
@@ -1582,17 +1583,19 @@ rotation=\rightrotpin]}}
 	\draw [line width = \collinet, \columncolor]
 	(\x{1},\y{1}+\baselinet/2)
 	-- (\x{1}, \y{\deflstart}+\baselinet/2);
-	\draw[line width=\baselinet]
+	\draw[line width=\baselinet, color=\supportlinecolor]
 	(\x{1}, \y{1}) -- ++(-\collinet/2,0)
 	-- ++(-\baselinet/2,0) -- ++(0,\leftwallh);}{}}{}
 
 	%% When left open - same as above
 	\ifthenelse{\leftbays>0}{
 	\ifthenelse{\leftopenstory>0}{
+	
 	\draw [line width = \collinet, \columncolor]
 	(\x{1},\y{1}+\baselinet/2)
 	-- (\x{1}, \y{\deflstart}+\baselinet/2);
-	\draw[line width=\baselinet]
+	
+	\draw[line width=\baselinet, color=\supportlinecolor]
 	(\x{1}, \y{1}) -- ++(-\collinet/2,0)
 	-- ++(-\baselinet/2,0) -- ++(0,\leftwallh);}{}}{}
 
@@ -1606,20 +1609,24 @@ rotation=\rightrotpin]}}
 	%% Draw the last column - No Need to Draw when bays are reduced
 	\ifthenelse{\rightbays=0}{
 	\ifthenelse{\superstorynumber>0}{
+	
 	\draw [line width = \collinet, \columncolor]
 	(\x{\columnnumber}, \y{1}+\baselinet/2)
 	-- (\x{\columnnumber}, \y{\deflstart}+\baselinet/2);
-	\draw[line width=\baselinet]
+	
+	\draw[line width=\baselinet, color=\supportlinecolor]
 	(\x{\columnnumber}, \y{1}) -- ++(+\collinet/2,0)
 	-- ++(\baselinet/2,0)  -- ++(0,\rightwallh);}{}}{}	
 
 	%% When Right Open
 	\ifthenelse{\rightbays>0}{
 	\ifthenelse{\rightopenstory>0}{
+	
 	\draw [line width = \collinet, \columncolor]
 	(\x{\columnnumber}, \y{1}+\baselinet/2)
 	-- (\x{\columnnumber}, \y{\deflstart}+\baselinet/2);
-	\draw[line width=\baselinet]
+	
+	\draw[line width=\baselinet, color=\supportlinecolor]
 	(\x{\columnnumber}, \y{1}) -- ++(+\collinet/2,0)
 	-- ++(\baselinet/2,0)  -- ++(0,\rightwallh);}{}}{}	
 }{} %% Closure for substructure - same as deflected and undeflected shape
@@ -1722,6 +1729,8 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 
 }{} %% Closure for deflected shape
 
+
+
 %%% Mark for Superstructure
 \ifthenelse{\superstorynumber>0}{
 	\ifthenelse{\showmarksuper=1}{
@@ -1758,7 +1767,7 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 
 %% 2. Support as continuous plate
 \ifthenelse{\showsupports=2}{
-	\fill [\supportfillcolor] (\rigbasestartx, 0) rectangle (\rigbaseendx,-\supportheight);
+	\fill [fill=\supportfillcolor] (\rigbasestartx, 0) rectangle (\rigbaseendx,-\supportheight);
 	\draw [line width = \baselinet, color=\supportlinecolor] (\rigbasestartx, 0) -- (\rigbaseendx,0);
 }{}
 
@@ -1785,20 +1794,25 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 	
 	\fill [fill=\supportfillcolor]
 	(\foundstartx, \foundboty) rectangle (\foundendx,\foundtopy);
-	\draw [line width = \baselinet, color=\supportlinecolor] (\foundstartx, \foundtopy)
-	-- (\foundendx, \foundtopy);
+	\draw [line width = \baselinet, color=\supportlinecolor]
+	(\foundstartx, \foundtopy) -- (\foundendx, \foundtopy);
 	
 }{}
 
-% Fix shear wall foundations
+% Fix for shear wall foundations
 \ifthenelse{\showshearwall=1}{
 	\ifthenelse{\NOT \showsupports=1}{
+		\ifthenelse{\NOT \showsupports=4}{
 		\draw[line width=\shearwalllinet, \supportfillcolor]
 		(\shearwallstartx-\shearwalllinet/2, \shearwallstarty)
 		--++(\shearwalldeltax+\shearwalllinet,0);
 		\draw[line width=\baselinet, color=\supportlinecolor]
 		(\shearwallstartx-\shearwalllinet/2,\y{1})
-		--++(\shearwalldeltax+\shearwalllinet,0);}}
+		--++(\shearwalldeltax+\shearwalllinet,0);}{}}{}}{}
+
+
+
+%\draw (0,0) -- node{\showsupports} (5cm,5cm) ;
 
 %% Fix for mat foundation
 \ifthenelse{\showsupports=5}{
@@ -1809,7 +1823,9 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 	-- ++(0,\rightwallh) -- ++(\supportwidth,0)
 	-- ++(0,-\rightwallh)-- ++(0,-\supportheight)
 	-- (\basewallstartx,-\supportheight)
-	-- cycle;}{}}{}
+	-- cycle;}}{}
+
+
 
 
 
@@ -1901,9 +1917,9 @@ rectangle ++(\shearwalldeltax,\shearwalldeltay);
 	
 }
 
-}}}} {}
+}}}}{}
 
-} {} %%% Closure show mass
+}{} %%% Closure show mass
 
 
 %%% White Shading for Superstructure
