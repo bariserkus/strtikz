@@ -1,0 +1,68 @@
+
+\pgfkeys{
+	/turkchar/.is family, /turkchar,
+	default/.style={startx = 0cm,
+		starty = 0cm,
+		endx = 5cm,
+		endy = 5cm,
+		number of springs = 10,
+		space between springs = 0.02cm,
+		space = 0.1cm,
+		start ratio = 0.02,
+		end ratio = 0.02,
+		spring text = $\SI{10}{\kilo\newton/\meter}$,
+		text color = black,
+		text shiftx=0pt,
+		text shifty=0pt,
+		text location=above,
+		spring prelength ratio=0.25,
+		spring postlength ratio=0.25,
+		spring segment=0.15cm,
+		spring width=3pt,
+		spring scale=1,
+		spring line thickness=1pt,
+		spring color=black,
+		support width=0.3cm,
+		support depth=0.1cm,
+		support line thickness=1pt,
+		show support shade=1,
+		support shade color=gray,},
+	startx/.store in = \springstartcoordx,
+	starty/.store in = \springstartcoordy,
+	endx/.store in = \springendcoordx,
+	endy/.store in = \springendcoordy,
+	number of springs/.store in = \springnumber,
+	space between springs/.store in = \spbtwspr,
+	space/.store in = \springspace,
+	start ratio/.store in = \springstartratio,
+	end ratio/.store in = \springendratio,
+	spring text/.store in = \springtext,
+	text color/.store in = \textcolor,
+	text shiftx/.store in = \textshiftx,
+	text shifty/.store in = \textshifty,
+	text location/.store in = \loc,
+	spring prelength ratio/.store in = \prelenratio,
+	spring postlength ratio/.store in = \postlenratio,
+	spring segment/.store in = \segm,
+	spring width/.store in = \sprwid,
+	spring scale/.store in = \sprscale,
+	spring line thickness/.store in = \sprlinethk,
+	spring color/.store in = \sprcolor,
+	support width/.store in = \suppwidth,
+	support depth/.store in = \suppdepth,
+	support line thickness/.store in = \supplinethk,
+	show support shade/.store in = \showsuppshade,
+	support shade color/.store in = \suppshadecol,}
+
+\newcommand{\turkchar}[1][]{
+	\pgfkeys{/turkchar, default, #1}
+	\tikzmath{
+		int \springnumber, \i;
+		for \i in {2,...,5}{};
+	}
+
+	
+		
+		\node[] at (0,0) {\springtext};
+		
+}

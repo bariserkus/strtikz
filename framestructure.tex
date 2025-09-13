@@ -177,6 +177,7 @@
   pvertical start ratio = 0.1,
   pvertical end ratio = 0.1,
   pvertical spring text = {},
+  pvertical text color = black,
   pvertical text shiftx=0pt,
   pvertical text shifty=0pt,
   pvertical spring length=0.5cm,
@@ -193,6 +194,10 @@
   pvertical show support shade=1,
   pvertical support shade color=gray,
   paxial show spring=1,
+  paxial spring text = {},
+  paxial text color = black,
+  paxial text shiftx=0pt,
+  paxial text shifty=0pt,
   paxial spring length=0.5cm,
   paxial spring prelenratio=0.25,
   paxial spring postlength ratio=0.1,
@@ -484,6 +489,7 @@
   pvertical start ratio/.store in = \pverspringstartratio,
   pvertical end ratio/.store in = \pverspringendratio,
   pvertical spring text/.store in = \pverspringtext,
+  pvertical text color/.store in = \pvertextcolor,
   pvertical text shiftx/.store in = \pvertextshiftx,
   pvertical text shifty/.store in = \pvertextshifty,
   pvertical spring length/.store in = \pverspringlength,
@@ -500,6 +506,10 @@
   pvertical show support shade/.store in = \pvershowsuppshade,
   pvertical support shade color/.store in = \pversuppshadecol,
   paxial show spring/.store in = \showpaxialspring,
+  paxial spring text/.store in = \paxialspringtext,
+  paxial text color/.store in = \paxialtextcolor,
+  paxial text shiftx/.store in = \paxialtextshiftx,
+  paxial text shifty/.store in = \paxialtextshifty,
   paxial spring length/.store in=\paxialspringlength,
   paxial spring prelenratio/.store in=\paxialspringprelenratio,
   paxial spring postlength ratio/.store in=\paxialspringpostlenratio,
@@ -694,6 +704,7 @@ real \pverampl, \pversegm, \pverspringscale, \pverspringthk;
 real \pversuppwidth, \pversuppdepth, \pversupplinethk;
 int \pvershowsuppshade;
 int \showpaxialspring;
+real \pvertextshiftx, \pvertextshifty;
 real \paxialspringlength, \paxialspringprelenratio, \paxialspringpostlenratio;
 real \paxialspringsegm, \paxialspringwidth, \paxialspringlinethk;
 real \paxialsuppwidth, \paxialsuppdepth, \paxialsupplinethk;
@@ -820,7 +831,8 @@ real \hsdistleft, \hsdistright, \hsdistbottom, \hsinnerlinethk, \thinlinethk;
 \pversuppwidth=\pversuppwidth;
 \pversuppdepth=\pversuppdepth;
 \pversupplinethk=\pversupplinethk;
-\showpaxialspring=\showpaxialspring;
+\pvertextshiftx=\pvertextshiftx;
+\pvertextshifty=\pvertextshifty;
 \paxialspringlength=\paxialspringlength;
 \paxialspringsegm=\paxialspringsegm;
 \paxialspringwidth=\paxialspringwidth;
@@ -1195,7 +1207,7 @@ for \ibot in {2,...,{\nbotpin}}{
 	\foreach \istory in {\deflstartplusone,...,{\levelnumber}}
 	{
 		\tikzmath{\substextnum=\istory-\deflstart;}
-		\draw [arrows={-[length=5pt, width=4pt]>}, line width=1pt]
+		\draw [arrows={-[length=5pt, width=4pt]>}, line width=1pt, red]
 		(\x{\startcol}+\deflect{\istory}*\showdefl-\toparrlen,\y{\istory}) --
 			node[anchor=south, pos=0.4, inner sep=1pt]{$F_{\substextnum}$}		
 		(\x{\startcol}+\deflect{\istory}*\showdefl-\latloadshift, \y{\istory});
@@ -1324,6 +1336,7 @@ vertical space = \pverspringspace,
 vertical start ratio = \pverspringstartratio,
 vertical end ratio = \pverspringendratio,
 vertical spring text = \pverspringtext,
+vertical text color=\pvertextcolor
 vertical text shiftx= \pvertextshiftx,
 vertical text shifty= \pvertextshifty,
 vertical spring length= \pverspringlength,
@@ -1340,6 +1353,10 @@ vertical support line thickness = \pversupplinethk,
 vertical show support shade= \pvershowsuppshade,
 vertical support shade color= \pversuppshadecol,
 axial show spring= \showpaxialspring,
+axial spring text = \paxialspringtext,
+axial text color=\paxialtextcolor,
+axial text shiftx= \paxialtextshiftx,
+axial text shifty= \paxialtextshifty,
 axial spring length=\paxialspringlength,
 axial spring prelenratio=\paxialspringprelenratio,
 axial spring postlength ratio=\paxialspringpostlenratio,
@@ -1579,10 +1596,11 @@ rotation=\rightrotpin]}}
 	
 	%% Draw first column - No Need to Draw when bays are reduced
 	\ifthenelse{\leftbays=0}{
-	\ifthenelse{\superstorynumber>0}{
+	\ifthenelse{\superstorynumber>0 \OR \leftopenstory>0}{
 	\draw [line width = \collinet, \columncolor]
 	(\x{1},\y{1}+\baselinet/2)
 	-- (\x{1}, \y{\deflstart}+\baselinet/2);
+	
 	\draw[line width=\baselinet, color=\supportlinecolor]
 	(\x{1}, \y{1}) -- ++(-\collinet/2,0)
 	-- ++(-\baselinet/2,0) -- ++(0,\leftwallh);}{}}{}
@@ -1608,7 +1626,7 @@ rotation=\rightrotpin]}}
 	
 	%% Draw the last column - No Need to Draw when bays are reduced
 	\ifthenelse{\rightbays=0}{
-	\ifthenelse{\superstorynumber>0}{
+	\ifthenelse{\superstorynumber>0 \OR \rightopenstory>0}{
 	
 	\draw [line width = \collinet, \columncolor]
 	(\x{\columnnumber}, \y{1}+\baselinet/2)

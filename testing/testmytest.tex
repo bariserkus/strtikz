@@ -1,8 +1,8 @@
 \documentclass[]{standalone}
 %\usepackage{mathptmx}
 %\renewcommand{\familydefault}{\rmdefault}
-%\usepackage[T1]{fontenc}
-%\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[latin9]{inputenc}
 \usepackage{siunitx}
 \usepackage{array}
 \usepackage{amsmath}
@@ -15,7 +15,7 @@
 \usepackage{amsmath,amsthm}
 \usepackage{strtikz}
 \usetikzlibrary{shapes,arrows.meta,intersections,graphs,graphs.standard}
-\usetikzlibrary{bending, math,fit}
+\usetikzlibrary{bending, math,fit, patterns, patterns.meta}
 \usetikzlibrary{calc,intersections,through,backgrounds,decorations.pathmorphing}
 %\usetikzlibrary{fpu}
 %\usepackage{pgfmath}
@@ -25,36 +25,38 @@
 
 
 \begin{tikzpicture}
-\draw [line width=1](0 cm, 0 cm) -- (5cm, 5 cm);
-\framedistributedspring[startx = 0cm,
+\turkchar[startx = 0cm,
 starty = 0cm,
 endx = 5cm,
-endy = 5cm,
+endy = 0cm,
 number of springs = 5,
-mirror springs = 1,
-space = 0.0cm,
-start ratio = 0.02,
-end ratio = 0.02,
-spring text = {ABCğüşiçÜĞŞİÇIiıı},
-text color= red,
+space between springs = 0.0cm,
+space = 0.5cm,
+start ratio = 0.0,
+end ratio = 0.0,
+spring text = {yayı},
+text color = black,
 text shiftx=0pt,
 text shifty=0pt,
-text location=below,
-spring length=0.5cm,
-spring prelength ratio=0.2,
+text location=above,
+spring prelength ratio=0.1,
 spring postlength ratio=0.1,
-spring width=0.07cm,
 spring segment=0.15cm,
+spring width=3pt,
 spring scale=1,
 spring line thickness=1pt,
-spring color=black,
+spring color = black,
 support width=0.3cm,
-support depth = 0.1cm,
-support line thickness = 1pt,
+support depth=0.1cm,
+support line thickness=1pt,
 show support shade=1,
-support shade color=red,]
+support shade color=gray,]
 %$\SI{10}{\kilo\newton/\meter}$
+
+
 \end{tikzpicture}
+
+
 
 
 \end{document}

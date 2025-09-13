@@ -5,10 +5,12 @@
   endx = 5cm,
   endy = 5cm,
   number of springs = 10,
+  mirror springs = 1,
   space = 0.1cm,
   start ratio = 0.02,
   end ratio = 0.02,
   spring text = {},
+  text color= black,
   text shiftx=0pt,
   text shifty=0pt,
   text location=above,
@@ -30,10 +32,12 @@
   endx/.store in = \springendcoordx,
   endy/.store in = \springendcoordy,
   number of springs/.store in = \springnumber,
+  mirror springs/.store in = \mirrorspring,
   space/.store in = \springspace,
   start ratio/.store in = \springstartratio,
   end ratio/.store in = \springendratio,
   spring text/.store in = \springtext,
+  text color/.store in = \textcolor,
   text shiftx/.store in = \textshiftx,
   text shifty/.store in = \textshifty,
   text location/.store in = \loc,
@@ -59,15 +63,15 @@ real \springangle, \springunx, \springuny, \springdxf, \springdyf;
 real \springdxa, \springdya, \springaaa, \springbbb;
 real \springxvalue, \springyvalue;
 real \springwxvalue, \springwyvalue, \springheight, \springstartratio, \springendratio, \lenf;
-int \springnumber, \springnumbermo, \i, \j;
+int \springnumber, \springnumbermo, \ijk, \j;
 real \rnarr;
 real \springscale;
 real \textshiftx, \textshifty;
 real \springthk, \ampl, \prelenratio, \postlenratio, \prelength, \postlength, \segm;
-real \springlength;
+real \springlength, \sprspang;
 real \supportdist, \supportdistdx, \supportdistdy, \supportendx, \supportendy;
 real \suppwidth, \supdepth, \supplinethk;
-int \showsuppshade;
+int \showsuppshade, \fixangle, \fixtextspace;
 %Conversion all units to the unit pt
 \springstartcoordx = \springstartcoordx;
 \springstartcoordy = \springstartcoordy;
@@ -100,18 +104,21 @@ int \showsuppshade;
 \springyvalue{1} = \springstartcoordy + \springdyf*(\springstartratio);
 \springxvalue{\springnumber} = \springendcoordx - \springdxf*(\springendratio);
 \springyvalue{\springnumber} = \springendcoordy - \springdyf*(\springendratio);
-for \i in {2,...,{\springnumber-1}}{
-\springxvalue{\i} = \springxvalue{1} + (\i-1)*\springwxvalue;
-\springyvalue{\i} = \springyvalue{1} + (\i-1)*\springwyvalue;
+for \ijk in {2,...,{\springnumber-1}}{
+\springxvalue{\ijk} = \springxvalue{1} + (\ijk-1)*\springwxvalue;
+\springyvalue{\ijk} = \springyvalue{1} + (\ijk-1)*\springwyvalue;
 };
 \springnumbermo = \springnumber-1;
 %
+if equal(\mirrorspring,1) then {\fixangle=-1;};
+if equal(\mirrorspring,0) then {\fixangle= 1;};
+\sprspang=\fixangle*90+\springangle;
 \supportdist=\springspace+\springlength;
-\supportdistdx=cos(90+\springangle)*\supportdist;
-\supportdistdy=sin(90+\springangle)*\supportdist;
-for \i in {1,...,{\springnumber}}{
-	\supportendx{\i} = \springxvalue{\i} + \supportdistdx;
-	\supportendy{\i} = \springyvalue{\i} + \supportdistdy;
+\supportdistdx=cos(\sprspang)*\supportdist;
+\supportdistdy=sin(\sprspang)*\supportdist;
+for \ijk in {1,...,{\springnumber}}{
+	\supportendx{\ijk} = \springxvalue{\ijk} + \supportdistdx;
+	\supportendy{\ijk} = \springyvalue{\ijk} + \supportdistdy;
 };
 \totalspringsupportlength=\suppdepth+\springspace+\springlength;
 %\loc = ifthenelse(\totalspringsupportlength>=0,"above","below");
@@ -121,7 +128,7 @@ for \i in {1,...,{\springnumber}}{
 %\node at(0,2cm) {\segm};
 
 \begin{scope}[x=1pt, y=1pt]; % Drawing everything in pt units
-\foreach \i in {1,...,\springnumber}{
+\foreach \ijk in {1,...,\springnumber}{
 \draw[line width=\springthk, \springcolor, line join=round,
 decorate,
 decoration={zigzag,
@@ -129,25 +136,25 @@ decoration={zigzag,
 	pre length=\prelength,
 	post length=\postlength,
 	segment length=\segm,}] 
-(\springxvalue{\i}, \springyvalue{\i})
-++(90+\springangle:\springspace) --
-++(90+\springangle:\springlength);
+(\springxvalue{\ijk}, \springyvalue{\ijk})
+++(\sprspang:\springspace) --
+++(\sprspang:\springlength);
 
 \fixedsupport[%
 support width = \suppwidth,
 support depth = \suppdepth,
 line thickness = \supplinethk,
-x value = \supportendx{\i},
-y value = \supportendy{\i},
-rotation = 180+\springangle,
+x value = \supportendx{\ijk},
+y value = \supportendy{\ijk},
+rotation = 90+\sprspang,
 show shade=\showsuppshade,
 shade color=\suppshadecol,]
 
 }
 
-\path[](\springstartcoordx,\springstartcoordy) -- ++(90+\springangle:\totalspringsupportlength) --
-node[\loc,midway,sloped, xshift=\textshiftx, yshift=\textshifty, inner sep=1pt]{\springtext}
-++(\springdxf,\springdyf);
+\path[](\springstartcoordx,\springstartcoordy) -- ++(\sprspang:\totalspringsupportlength) --
+node[\loc,sloped, xshift=\textshiftx, yshift=\textshifty, inner sep=1pt, \textcolor]
+{\springtext} ++(\springdxf,\springdyf);
 
 \end{scope}
 }

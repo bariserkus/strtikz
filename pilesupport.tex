@@ -1,6 +1,6 @@
 \pgfkeys{
  /pilesupport/.is family, /pilesupport,
-  default/.style = {
+  default/.style={
   x coordinate=0cm,
   y coordinate=0cm,  
   pile depth=4cm,
@@ -12,36 +12,41 @@
   boundary line color=green,
   boundary line type=dashed,
   horizontal show springs=1,
-  horizontal number of springs = 5,
-  horizontal spring direction = 1,
-  horizontal space between springs = 0.15cm,
-  horizontal space = 0.25cm,
-  horizontal start ratio = 0.05,
-  horizontal end ratio = 0.05,
-  horizontal spring text = {},
-  horizontal text color = black,
+  horizontal number of springs=5,
+  horizontal mirror springs=0,
+  horizontal space=0.25cm,
+  horizontal start ratio=0.05,
+  horizontal end ratio=0.05,
+  horizontal spring text={},
+  horizontal text color=black,
   horizontal text shiftx=0pt,
   horizontal text shifty=0pt,
+  horizontal text location=above,
   horizontal spring prelength ratio=0.2,
   horizontal spring postlength ratio=0.2,
   horizontal spring segment=0.15cm,
   horizontal spring width=3pt,
   horizontal spring scale=1,
   horizontal spring line thickness=1pt,
-  horizontal spring color = black,
+  horizontal spring color=black,
   horizontal support width=0.3cm,
   horizontal support depth=0.1cm,
   horizontal support line thickness=1pt,
   horizontal show support shade=1,
   horizontal support shade color=gray,
   vertical show springs=1,
-  vertical number of springs = 5,
-  vertical space = 0.0cm,
-  vertical start ratio = 0.1,
-  vertical end ratio = 0.1,
-  vertical spring text = {},
+  vertical number of springs=5,
+  vertical show last spring=0,
+  vertical mirror springs=0,
+  vertical space between springs=0.15cm,
+  vertical space=0.0cm,
+  vertical start ratio=0.1,
+  vertical end ratio=0.1,
+  vertical spring text={},
+  vertical text color=black,
   vertical text shiftx=0pt,
   vertical text shifty=0pt,
+  vertical text location=above,
   vertical spring length=0.5cm,
   vertical spring prelength ratio=0.15,
   vertical spring postlength ratio=0.15,
@@ -51,11 +56,15 @@
   vertical spring line thickness=1pt,
   vertical spring color=black,
   vertical support width=0.3cm,
-  vertical support depth = 0.1cm,
-  vertical support line thickness = 1pt,
+  vertical support depth=0.1cm,
+  vertical support line thickness=1pt,
   vertical show support shade=1,
   vertical support shade color=gray,
   axial show spring=1,
+  axial spring text={$Q-z$ Spring},
+  axial text color=black,
+  axial text shiftx=0pt,
+  axial text shifty=0pt,
   axial spring length=0.5cm,
   axial spring prelenratio=0.25,
   axial spring postlength ratio=0.1,
@@ -64,10 +73,16 @@
   axial spring line thickness=1pt,
   axial spring color=black,
   axial support width=0.3cm,
-  axial support depth = 0.1cm,
-  axial support line thickness = 1pt,
+  axial support depth=0.1cm,
+  axial support line thickness=1pt,
   axial show support shade=1,
-  axial support shade color=gray,},
+  axial support shade color=gray,
+  show frames=1,
+  frame number=10,
+  frame circle radius=1pt,
+  frame line thickness=1pt,
+  frame line color=blue,
+  frame line type=dashed,},
   x coordinate/.store in=\coordinatex,
   y coordinate/.store in=\coordinatey,
   pile depth/.store in=\pdepth,
@@ -78,51 +93,60 @@
   boundary line thickness/.store in=\blinethick,
   boundary line color/.store in=\blinecolor,
   boundary line type/.store in=\blinetype,
-  horizontal show springs/.store in = \showhorizontalsprings,
-  horizontal number of springs/.store in = \horspringnumber,
-  horizontal spring direction/.store in = \horspringdir,
-  horizontal space between springs/.store in = \horspbtwspr,
-  horizontal space/.store in = \horspringspace,
-  horizontal start ratio/.store in = \horspringstartratio,
-  horizontal end ratio/.store in = \horspringendratio,
-  horizontal spring text/.store in = \horspringtext,
-  horizontal text color/.store in = \hortextcolor,
-  horizontal text shiftx/.store in = \hortextshiftx,
-  horizontal text shifty/.store in = \hortextshifty,
-  horizontal spring prelength ratio/.store in = \horprelenratio,
-  horizontal spring postlength ratio/.store in = \horpostlenratio,
-  horizontal spring segment/.store in = \horsegm,
-  horizontal spring width/.store in = \horsprwid,
-  horizontal spring scale/.store in = \horsprscale,
-  horizontal spring line thickness/.store in = \horsprlinethk,
-  horizontal spring color/.store in = \horsprcolor,
-  horizontal support width/.store in = \horsuppwidth,
-  horizontal support depth/.store in = \horsuppdepth,
-  horizontal support line thickness/.store in = \horsupplinethk,
-  horizontal show support shade/.store in = \horshowsuppshade,
-  horizontal support shade color/.store in = \horsuppshadecol,
-  vertical show springs/.store in = \showverticalsprings,
-  vertical number of springs/.store in = \verspringnumber,
-  vertical space/.store in = \verspringspace,
-  vertical start ratio/.store in = \verspringstartratio,
-  vertical end ratio/.store in = \verspringendratio,
-  vertical spring text/.store in = \verspringtext,
-  vertical text shiftx/.store in = \vertextshiftx,
-  vertical text shifty/.store in = \vertextshifty,
-  vertical spring length/.store in = \verspringlength,
-  vertical spring prelength ratio/.store in = \verprelenratio,
-  vertical spring postlength ratio/.store in = \verpostlenratio,
-  vertical spring width/.store in = \verampl,
-  vertical spring segment/.store in = \versegm,
-  vertical spring scale/.store in = \verspringscale,
-  vertical spring line thickness/.store in = \verspringthk,
-  vertical spring color/.store in = \verspringcolor,
-  vertical support width/.store in = \versuppwidth,
-  vertical support depth/.store in = \versuppdepth,
-  vertical support line thickness/.store in = \versupplinethk,
-  vertical show support shade/.store in = \vershowsuppshade,
-  vertical support shade color/.store in = \versuppshadecol,
-  axial show spring/.store in = \showaxialspring,
+  horizontal show springs/.store in=\showhorizontalsprings,
+  horizontal number of springs/.store in=\horspringnumber,
+  horizontal mirror springs/.store in=\hormirrorspring,
+  horizontal space/.store in=\horspringspace,
+  horizontal start ratio/.store in=\horspringstartratio,
+  horizontal end ratio/.store in=\horspringendratio,
+  horizontal spring text/.store in=\horspringtext,
+  horizontal text color/.store in=\hortextcolor,
+  horizontal text shiftx/.store in=\hortextshiftx,
+  horizontal text shifty/.store in=\hortextshifty,
+  horizontal text location/.store in=\hortextloc,
+  horizontal spring prelength ratio/.store in=\horprelenratio,
+  horizontal spring postlength ratio/.store in=\horpostlenratio,
+  horizontal spring segment/.store in=\horsegm,
+  horizontal spring width/.store in=\horsprwid,
+  horizontal spring scale/.store in=\horsprscale,
+  horizontal spring line thickness/.store in=\horsprlinethk,
+  horizontal spring color/.store in=\horsprcolor,
+  horizontal support width/.store in=\horsuppwidth,
+  horizontal support depth/.store in=\horsuppdepth,
+  horizontal support line thickness/.store in=\horsupplinethk,
+  horizontal show support shade/.store in=\horshowsuppshade,
+  horizontal support shade color/.store in=\horsuppshadecol,
+  vertical show springs/.store in=\showverticalsprings,  
+  vertical number of springs/.store in=\verspringnumber,
+  vertical show last spring/.store in=\vershowlastspring,
+  vertical space between springs/.store in=\verspbtwspr,
+  vertical space/.store in=\verspringspace,
+  vertical mirror springs/.store in=\vermirrorspring,
+  vertical start ratio/.store in=\verspringstartratio,
+  vertical end ratio/.store in=\verspringendratio,
+  vertical spring text/.store in=\verspringtext,
+  vertical text color/.store in=\vertextcolor,
+  vertical text shiftx/.store in=\vertextshiftx,
+  vertical text shifty/.store in=\vertextshifty,
+  vertical text location/.store in=\vertextloc,
+  vertical spring length/.store in=\verspringlength,
+  vertical spring prelength ratio/.store in=\verprelenratio,
+  vertical spring postlength ratio/.store in=\verpostlenratio,
+  vertical spring width/.store in=\versprwid,
+  vertical spring segment/.store in=\versegm,
+  vertical spring scale/.store in=\versprscale,
+  vertical spring line thickness/.store in=\versprlinethk,
+  vertical spring color/.store in=\versprcolor,
+  vertical support width/.store in=\versuppwidth,
+  vertical support depth/.store in=\versuppdepth,
+  vertical support line thickness/.store in=\versupplinethk,
+  vertical show support shade/.store in=\vershowsuppshade,
+  vertical support shade color/.store in=\versuppshadecol,
+  axial show spring/.store in=\showaxialspring,
+  axial spring text/.store in=\axialspringtext,
+  axial text color/.store in=\axialtextcolor,
+  axial text shiftx/.store in=\axialtextshiftx,
+  axial text shifty/.store in=\axialtextshifty,
   axial spring length/.store in=\axialspringlength,
   axial spring prelenratio/.store in=\axialspringprelenratio,
   axial spring postlength ratio/.store in=\axialspringpostlenratio,
@@ -130,11 +154,17 @@
   axial spring width/.store in=\axialspringwidth,
   axial spring line thickness/.store in=\axialspringlinethk,
   axial spring color/.store in=\axialspringcolor,
-  axial support width/.store in = \axialsuppwidth,
-  axial support depth/.store in = \axialsuppdepth,
-  axial support line thickness/.store in = \axialsupplinethk,
-  axial show support shade/.store in = \axialshowsuppshade,
-  axial support shade color/.store in = \axialsuppshadecol,}
+  axial support width/.store in=\axialsuppwidth,
+  axial support depth/.store in=\axialsuppdepth,
+  axial support line thickness/.store in=\axialsupplinethk,
+  axial show support shade/.store in=\axialshowsuppshade,
+  axial support shade color/.store in=\axialsuppshadecol,
+  show frames/.store in=\showframes,
+  frame number/.store in=\framenumber,
+  frame circle radius/.store in=\framecirclerad,
+  frame line thickness/.store in=\framelinethk,
+  frame line color/.store in=\framelinecolor,
+  frame line type/.store in=\framelinetype,}
 
 \newcommand{\pilesupport}[1][]{
 \pgfkeys{/pilesupport, default, #1}
@@ -142,8 +172,8 @@
 real \coordinatex, \coordinatey, \pdepth, \pdiameter, \plinethick;
 real \blinethick, \blinestartx, \blinewidth;
 int \drawboundryline;
-int \showhorizontalsprings, \horspringnumber, \horspringdir,
-real \horspbtwspr, \horspringspace, \horspringstartratio, \horspringendratio;
+int \showhorizontalsprings, \horspringnumber,
+real \horspringspace, \horspringstartratio, \horspringendratio;
 real \hortextshiftx, \hortextshifty, \horprelenratio, \horpostlenratio;
 real \horsegm, \horsprwid, \horsprscale, \horsprlinethk;
 real \horsupportdist, \horsupportdistdx, \horsupportdistdy, \horsupportendx, \horsupportendy;
@@ -152,16 +182,23 @@ int \horshowsuppshade;
 int \showverticalsprings, \verspringnumber;
 real \verspringspace, \verspringstartratio, \verspringendratio;
 real \vertextshiftx, \vertextshifty, \verspringlength;
-real \verprelenratio, \verpostlenratio, \verampl, \versegm;
-real \verspringscale, \verspringthk;
+real \verprelenratio, \verpostlenratio, \versprwid, \versegm;
+real \versprscale, \versprlinethk;
 real \versuppwidth, \versuppdepth, \versupplinethk;
-int \vershowsuppshade;
+int \vershowsuppshade, \vershowlastspring;
 int \showaxialspring;
 real \axialspringlength, \axialspringprelenratio, \axialspringpostlenratio;
 real \axialspringsegm, \axialspringwidth, \axialspringlinethk,
 real \axialspringprelength, \axialspringpostlength, \axialspringx, \axialspringy;
 real \axialsuppwidth, \axialsuppdepth, \axialsupplinethk;
+real \axialtextshiftx, \axialtextshifty;
 int \axialshowsuppshade;
+real \framecirclerad, \framelinethk;
+real \pileradius, \framelen, \framenodey;
+int \ijk, \framenumber, \showframes;
+%%%
+\framecirclerad=\framecirclerad;
+\framelinethk=\framelinethk;
 %Conversion all units to the unit pt
 \coordinatex=\coordinatex;
 \coordinatey=\coordinatey;
@@ -173,9 +210,9 @@ int \axialshowsuppshade;
 \vertextshiftx=\vertextshiftx;
 \vertextshifty=\vertextshifty;
 \verspringlength=\verspringlength;
-\verampl=\verampl;
+\versprwid=\versprwid;
 \versegm=\versegm;
-\verspringthk=\verspringthk;
+\versprlinethk=\versprlinethk;
 \versuppwidth=\versuppwidth;
 \versuppdepth=\versuppdepth;
 \versupplinethk=\versupplinethk;
@@ -194,6 +231,8 @@ int \axialshowsuppshade;
 \axialsuppwidth=\axialsuppwidth;
 \axialsuppdepth=\axialsuppdepth;
 \axialsupplinethk=\axialsupplinethk;
+\axialtextshiftx=\axialtextshiftx;
+\axialtextshifty=\axialtextshifty;
 %End conversion, All values are now in pt units.
 \blinestartx=\pdiameter/2+\plinethick/2+\blinethick/2;
 \blinewidth=2*\blinestartx;
@@ -203,6 +242,12 @@ int \axialshowsuppshade;
 \axialspringx=0;
 \axialspringy=-\pdepth;
 \axialsupporty=-\pdepth-\axialspringlength;
+%%%Frames
+\pileradius=\pdiameter/2;
+\framelen=\pdepth/\framenumber;
+for \ijk in {0,...,{\framenumber}}{
+	\framenodey{\ijk}=-\ijk*\framelen;
+};
 }
 
 
@@ -211,51 +256,24 @@ int \axialshowsuppshade;
 	
 %% Lateral Springs
 \ifthenelse{\showhorizontalsprings=1}{
-	\framedistributedspring[startx = \pdiameter/2,
-	starty = 0cm,
-	endx = \pdiameter/2,
-	endy = -\pdepth,
-	number of springs = \verspringnumber,
-	space = \verspringspace,
-	start ratio = \verspringstartratio,
-	end ratio = \verspringendratio,
-	spring text = {},
-	text shiftx=\vertextshiftx,
-	text shifty=\vertextshifty,
-	spring length=\verspringlength,
-	spring prelength ratio=\verprelenratio,
-	spring postlength ratio=\verpostlenratio,
-	spring width=\verampl,
-	spring segment=\versegm,
-	spring scale=\verspringscale,
-	spring line thickness=\verspringthk,
-	spring color=\verspringcolor,
-	support width=\versuppwidth,
-	support depth = \versuppdepth,
-	support line thickness = \versupplinethk,
-	show support shade=\vershowsuppshade,
-	support shade color=\versuppshadecol,]}
-
-%% Vertical Springs
-\ifthenelse{\showverticalsprings=1}{
-	\framehorizontalspring[startx = -\pdiameter/2,
-	starty = -\pdepth,
-	endx = -\pdiameter/2,
-	endy = 0,
-	number of springs = \horspringnumber,
-	spring direction = \horspringdir,
-	space between springs =\horspbtwspr,
-	space = \horspringspace,
-	start ratio = \horspringstartratio,
-	end ratio = \horspringendratio,
-	spring text = {},
-	text color = black,
+	\framedistributedspring[startx=\pdiameter/2,
+	starty=0cm,
+	endx=\pdiameter/2,
+	endy=-\pdepth,
+	number of springs=\horspringnumber,
+	mirror springs = \hormirrorspring,
+	space=\horspringspace,
+	start ratio=\horspringstartratio,
+	end ratio=\horspringendratio,
+	spring text=\horspringtext,
+	%text color=\hortextcolor,
 	text shiftx=\hortextshiftx,
 	text shifty=\hortextshifty,
+	text location=\hortextloc,
 	spring prelength ratio=\horprelenratio,
 	spring postlength ratio=\horpostlenratio,
-	spring segment=\horsegm,
 	spring width=\horsprwid,
+	spring segment=\horsegm,
 	spring scale=\horsprscale,
 	spring line thickness=\horsprlinethk,
 	spring color=\horsprcolor,
@@ -264,7 +282,40 @@ int \axialshowsuppshade;
 	support line thickness=\horsupplinethk,
 	show support shade=\horshowsuppshade,
 	support shade color=\horsuppshadecol,]}
+	
+%% Vertical Springs
+\ifthenelse{\showverticalsprings=1}{
+	\framehorizontalspring[startx=-\pdiameter/2,
+	starty=-\pdepth,
+	endx=-\pdiameter/2,
+	endy=0,
+	number of springs=\verspringnumber,
+	show last spring=\vershowlastspring,
+	mirror springs = \vermirrorspring,
+	space between springs=\verspbtwspr,
+	space=\verspringspace,
+	start ratio=\verspringstartratio,
+	end ratio=\verspringendratio,
+	spring text={\verspringtext},
+	text color=\vertextcolor,
+	text shiftx=\vertextshiftx,
+	text shifty=\vertextshifty,
+	text location=\vertextloc,
+	spring prelength ratio=\verprelenratio,
+	spring postlength ratio=\verpostlenratio,
+	spring segment=\versegm,
+	spring width=\versprwid,
+	spring scale=\versprscale,
+	spring line thickness=\versprlinethk,
+	spring color=\versprcolor,
+	support width=\versuppwidth,
+	support depth=\versuppdepth,
+	support line thickness=\versupplinethk,
+	show support shade=\vershowsuppshade,
+	support shade color=\versuppshadecol,]}
 
+
+	
 %% Axial Springs
 \ifthenelse{\showaxialspring=1}{
 	\draw[line width=\axialspringlinethk, \axialspringcolor, line join=round,
@@ -274,15 +325,18 @@ int \axialshowsuppshade;
 		pre length=\axialspringprelength,
 		post length=\axialspringpostlength,
 		segment length=\axialspringsegm,}] 
-	(\axialspringx, \axialspringy) -- ++(0,-\axialspringlength);
+	(\axialspringx, \axialspringy) --
+	node[anchor=west, inner sep=1pt, color=black,
+	xshift=\axialtextshiftx, yshift=\axialtextshifty]{\axialspringtext}
+	++(0,-\axialspringlength);
 	
 	\fixedsupport[%
-	support width = \axialsuppwidth,
-	support depth = \axialsuppdepth,
-	line thickness = \axialsupplinethk,
-	x value = 0,
-	y value = \axialsupporty,
-	rotation = 0,
+	support width=\axialsuppwidth,
+	support depth=\axialsuppdepth,
+	line thickness=\axialsupplinethk,
+	x value=0,
+	y value=\axialsupporty,
+	rotation=0,
 	show shade=\axialshowsuppshade,
 	shade color=\axialsuppshadecol,]}
 
@@ -303,6 +357,17 @@ int \axialshowsuppshade;
 \ifthenelse{\drawboundryline=1}{
 \draw[line width=\blinethick, \blinecolor, \blinetype]
 (-\blinestartx,0) -- ++(0,-\pdepth) -- ++(\blinewidth,0) -- ++(0,\pdepth);}{}
+
+
+
+\ifthenelse{\showframes=1}{
+\foreach \ijk in {0,...,\framenumber}{
+	
+	\draw[line width=\framelinethk, line join=round, \framelinecolor,\framelinetype]
+	(-\pileradius, \framenodey{\ijk}) -- (\pileradius, \framenodey{\ijk});
+	
+	\fill [\framelinecolor] (0,\framenodey{\ijk}) circle (\framecirclerad);
+}}{}	
 
 
  

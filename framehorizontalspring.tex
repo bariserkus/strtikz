@@ -1,12 +1,12 @@
 \pgfkeys{
 /framehorizontalspring/.is family, /framehorizontalspring,
-default/.style={
-startx = 0cm,
+default/.style={startx = 0cm,
 starty = 0cm,
 endx = 5cm,
 endy = 5cm,
 number of springs = 10,
-spring direction = 1,
+show last spring=0,
+mirror springs = 0,
 space between springs = 0.02cm,
 space = 0.1cm,
 start ratio = 0.02,
@@ -15,6 +15,7 @@ spring text = $\SI{10}{\kilo\newton/\meter}$,
 text color = black,
 text shiftx=0pt,
 text shifty=0pt,
+text location=above,
 spring prelength ratio=0.25,
 spring postlength ratio=0.25,
 spring segment=0.15cm,
@@ -32,7 +33,8 @@ starty/.store in = \springstartcoordy,
 endx/.store in = \springendcoordx,
 endy/.store in = \springendcoordy,
 number of springs/.store in = \springnumber,
-spring direction/.store in = \springdir,
+show last spring/.store in = \showlastspring,
+mirror springs/.store in = \mirrorspring,
 space between springs/.store in = \spbtwspr,
 space/.store in = \springspace,
 start ratio/.store in = \springstartratio,
@@ -41,6 +43,7 @@ spring text/.store in = \springtext,
 text color/.store in = \textcolor,
 text shiftx/.store in = \textshiftx,
 text shifty/.store in = \textshifty,
+text location/.store in = \loc,
 spring prelength ratio/.store in = \prelenratio,
 spring postlength ratio/.store in = \postlenratio,
 spring segment/.store in = \segm,
@@ -64,7 +67,7 @@ real \springxvalue, \springyvalue;
 real \springwxvalue, \springwyvalue;
 real \springstartratio, \springendratio, \lenf;
 real \textshiftx, \textshifty;
-int \springnumber, \springnumbermo, \i, \j, \springdir;
+int \springnumber, \springnumbermo, \ijk, \j, \springdir;
 real \sprlen, \sprwid, \sprscale, \sprlinethk;
 real \prelenratio, \postlenratio, \prelength, \postlength, \segm;
 real \spbtwspr;
@@ -73,6 +76,10 @@ real \totalspacebetweensprings, \totalspacebetweenspringsdx, \totalspacebetweens
 real \supportdist, \supportdistdx, \supportdistdy, \supportendx, \supportendy;
 real \suppwidth, \supdepth, \supplinethk, \suppangle;
 int \showsuppshade;
+real \firstsupportstartx, \firstsupportstarty;
+real \firstsupportendx, \firstsupportendy;
+int \showlastspring, \fixspringno, \mirrorspring, \fixangle, \fixtextspace;
+real \textanchorangle, \textaddspace;
 %Conversion all units to the unit pt
 \springstartcoordx = \springstartcoordx;
 \springstartcoordy = \springstartcoordy;
@@ -88,6 +95,9 @@ int \showsuppshade;
 \suppdepth=\suppdepth;
 \suppwidth=\suppwidth;
 \supplinethk=\supplinethk;
+%%
+if equal(\showlastspring,1) then {\fixspringno=0;};
+if equal(\showlastspring,0) then {\fixspringno=1;};
 %End conversion, All values are now in pt units.
 %% Force application line
 \springdxf = (\springendcoordx-\springstartcoordx); %dx for the whole frame
@@ -100,9 +110,9 @@ int \showsuppshade;
 %%
 \spacebetweenspringsdx=\spbtwspr*cos(\springangle);
 \spacebetweenspringsdy=\spbtwspr*sin(\springangle);
-\totalspacebetweensprings=(\springnumber-1)*\spbtwspr;
-\totalspacebetweenspringsdx=(\springnumber-1)*\spacebetweenspringsdx;
-\totalspacebetweenspringsdy=(\springnumber-1)*\spacebetweenspringsdy;
+\totalspacebetweensprings=(\springnumber-1*\fixspringno)*\spbtwspr;
+\totalspacebetweenspringsdx=(\springnumber-1*\fixspringno)*\spacebetweenspringsdx;
+\totalspacebetweenspringsdy=(\springnumber-1*\fixspringno)*\spacebetweenspringsdy;
 %%
 \suppdx=(\suppdepth+\supplinethk/2)*cos(\springangle);
 \suppdy=(\suppdepth+\supplinethk/2)*sin(\springangle);
@@ -115,27 +125,43 @@ int \showsuppshade;
 \prelength=\prelenratio*\sprlen;
 \postlength=\postlenratio*\sprlen;
 %%
-\springxvalue{1} = \springstartcoordx + \springdxf*(\springstartratio) + \suppdx ;
-\springyvalue{1} = \springstartcoordy + \springdyf*(\springstartratio) + \suppdy ;
+\springxvalue{1} = \springstartcoordx + \springdxf*(\springstartratio) + \suppdx +
+\spacebetweenspringsdx*(\showlastspring) ;
+\springyvalue{1} = \springstartcoordy + \springdyf*(\springstartratio) + \suppdy + \spacebetweenspringsdy*(\showlastspring) ;
 %%
-for \i in {2,...,\springnumber}{
-\springxvalue{\i} = \springxvalue{1} + (\i-1)*(\springwxvalue + \spacebetweenspringsdx) ;
-\springyvalue{\i} = \springyvalue{1} + (\i-1)*(\springwyvalue + \spacebetweenspringsdy);
+for \ijk in {2,...,\springnumber}{
+\springxvalue{\ijk} = \springxvalue{1} + (\ijk-1)*(\springwxvalue + \spacebetweenspringsdx) ;
+\springyvalue{\ijk} = \springyvalue{1} + (\ijk-1)*(\springwyvalue + \spacebetweenspringsdy);
 };
 %%%
-\sprspang=90+\springangle;
 %%
+if equal(\mirrorspring,1) then {\fixangle=-1;};
+if equal(\mirrorspring,0) then {\fixangle= 1;};
+\sprspang=\fixangle*90+\springangle;
+%%
+if (sign(cos(\springangle))>0) then {\fixtextspace=1;};
+if equal(sign(cos(\springangle)),0) then {\fixtextspace=1;};
+if (sign(cos(\springangle))<0) then {\fixtextspace=-1;};
+if (\sprwid > \suppwidth) then {\textaddspace=\sprwid;} else {\textaddspace=\suppwidth/2;};
 \texti=int(\springnumber/2);
-\textshifty=\textshifty+\springspace;
+\textshifty=\fixangle*\fixtextspace*(\textshifty+\springspace+\textaddspace);
+\textanchorangle=\fixtextspace*(-1)*\fixangle*90;
 %%
 \supportdist=\springspace;
-\supportdistdx=cos(90+\springangle)*\supportdist;
-\supportdistdy=sin(90+\springangle)*\supportdist;
-for \i in {1,...,{\springnumber}}{
-	\supportendx{\i} = \springxvalue{\i} + \supportdistdx;
-	\supportendy{\i} = \springyvalue{\i} + \supportdistdy;
+\supportdistdx=cos(\sprspang)*\supportdist;
+\supportdistdy=sin(\sprspang)*\supportdist;
+for \ijk in {1,...,{\springnumber}}{
+	\supportendx{\ijk} = \springxvalue{\ijk} + \supportdistdx;
+	\supportendy{\ijk} = \springyvalue{\ijk} + \supportdistdy;
 };
+%%
 \suppangle=\springangle-90;
+%%
+\firstsupportstartx=\springstartcoordx-\springwxvalue+ \suppdx;
+\firstsupportstarty=\springstartcoordy-\springwyvalue+ \suppdy;
+\firstsupportendx=\firstsupportstartx+\supportdistdx;
+\firstsupportendy=\firstsupportstarty+\supportdistdy;
+%%
 }
 
 %\node at (-1cm,1cm) {\horspringlen};
@@ -146,9 +172,9 @@ for \i in {1,...,{\springnumber}}{
 \begin{scope}[x=1pt, y=1pt]; % Drawing everything in pt units
 
 %Springs
-\foreach \i in {1,...,\springnumber}{
+\foreach \ijk in {1,...,\springnumber}{
 	\draw[line width=\sprlinethk, \sprcolor, line join=round]
-	(\springxvalue{\i}, \springyvalue{\i}) ++(\sprspang:\springspace)
+	(\springxvalue{\ijk}, \springyvalue{\ijk}) ++(\sprspang:\springspace)
 	decorate[
 	decoration={zigzag,
 		amplitude=\sprwid,
@@ -161,16 +187,38 @@ for \i in {1,...,{\springnumber}}{
 support width = \suppwidth,
 support depth = \suppdepth,
 line thickness = \supplinethk,
-x value = \supportendx{\i},
-y value = \supportendy{\i},
+x value = \supportendx{\ijk},
+y value = \supportendy{\ijk},
 rotation = \suppangle,
 show shade=\showsuppshade,
 shade color=\suppshadecol,]
 	
 }
 
+\ifthenelse{\showlastspring=1}{
+\draw[line width=\sprlinethk, \sprcolor, line join=round]
+(\firstsupportstartx, \firstsupportstarty) ++(\sprspang:\springspace)
+decorate[
+decoration={zigzag,
+	amplitude=\sprwid,
+	pre length=\prelength,
+	post length=\postlength,
+	segment length=\segm,}] 
+{--	++(\springangle:\sprlen)} --++(\sprspang:-\springspace);
+
+\fixedsupport[%
+support width = \suppwidth,
+support depth = \suppdepth,
+line thickness = \supplinethk,
+x value = \firstsupportendx,
+y value = \firstsupportendy,
+rotation = \suppangle,
+show shade=\showsuppshade,
+shade color=\suppshadecol,]}{};
+
+
 \path (\springstartcoordx, \springstartcoordy) --
-node[sloped, above, xshift=\textshiftx, yshift=\textshifty]
+node[sloped, anchor=\textanchorangle, xshift=\textshiftx, yshift=\textshifty, inner sep=1pt, ]
 {\springtext}(\springendcoordx, \springendcoordy);
 
 \end{scope}
