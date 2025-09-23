@@ -22,6 +22,7 @@
   horizontal text shiftx=0pt,
   horizontal text shifty=0pt,
   horizontal text location=above,
+  horizontal spring length=0.5cm,
   horizontal spring prelength ratio=0.2,
   horizontal spring postlength ratio=0.2,
   horizontal spring segment=0.15cm,
@@ -47,7 +48,6 @@
   vertical text shiftx=0pt,
   vertical text shifty=0pt,
   vertical text location=above,
-  vertical spring length=0.5cm,
   vertical spring prelength ratio=0.15,
   vertical spring postlength ratio=0.15,
   vertical spring width=0.1cm,
@@ -104,6 +104,7 @@
   horizontal text shiftx/.store in=\hortextshiftx,
   horizontal text shifty/.store in=\hortextshifty,
   horizontal text location/.store in=\hortextloc,
+  horizontal spring length/.store in=\horspringlength,
   horizontal spring prelength ratio/.store in=\horprelenratio,
   horizontal spring postlength ratio/.store in=\horpostlenratio,
   horizontal spring segment/.store in=\horsegm,
@@ -129,7 +130,6 @@
   vertical text shiftx/.store in=\vertextshiftx,
   vertical text shifty/.store in=\vertextshifty,
   vertical text location/.store in=\vertextloc,
-  vertical spring length/.store in=\verspringlength,
   vertical spring prelength ratio/.store in=\verprelenratio,
   vertical spring postlength ratio/.store in=\verpostlenratio,
   vertical spring width/.store in=\versprwid,
@@ -177,11 +177,11 @@ real \horspringspace, \horspringstartratio, \horspringendratio;
 real \hortextshiftx, \hortextshifty, \horprelenratio, \horpostlenratio;
 real \horsegm, \horsprwid, \horsprscale, \horsprlinethk;
 real \horsupportdist, \horsupportdistdx, \horsupportdistdy, \horsupportendx, \horsupportendy;
-real \horsuppwidth, \horsupdepth, \horsupplinethk, \horsuppangle;
+real \horspringlength, \horsuppwidth, \horsupdepth, \horsupplinethk, \horsuppangle;
 int \horshowsuppshade;
 int \showverticalsprings, \verspringnumber;
 real \verspringspace, \verspringstartratio, \verspringendratio;
-real \vertextshiftx, \vertextshifty, \verspringlength;
+real \vertextshiftx, \vertextshifty;
 real \verprelenratio, \verpostlenratio, \versprwid, \versegm;
 real \versprscale, \versprlinethk;
 real \versuppwidth, \versuppdepth, \versupplinethk;
@@ -209,7 +209,6 @@ int \ijk, \framenumber, \showframes;
 \verspringspace=\verspringspace;
 \vertextshiftx=\vertextshiftx;
 \vertextshifty=\vertextshifty;
-\verspringlength=\verspringlength;
 \versprwid=\versprwid;
 \versegm=\versegm;
 \versprlinethk=\versprlinethk;
@@ -218,6 +217,7 @@ int \ijk, \framenumber, \showframes;
 \versupplinethk=\versupplinethk;
 \hortextshiftx=\hortextshiftx;
 \hortextshifty=\hortextshifty;
+\horspringlength=\horspringlength;
 \horsprwid=\horsprwid;
 \horsegm=\horsegm;
 \horsprlinethk=\horsprlinethk;
@@ -266,10 +266,11 @@ for \ijk in {0,...,{\framenumber}}{
 	start ratio=\horspringstartratio,
 	end ratio=\horspringendratio,
 	spring text=\horspringtext,
-	%text color=\hortextcolor,
+	text color=\hortextcolor,
 	text shiftx=\hortextshiftx,
 	text shifty=\hortextshifty,
 	text location=\hortextloc,
+	spring length=\horspringlength,
 	spring prelength ratio=\horprelenratio,
 	spring postlength ratio=\horpostlenratio,
 	spring width=\horsprwid,
@@ -326,7 +327,7 @@ for \ijk in {0,...,{\framenumber}}{
 		post length=\axialspringpostlength,
 		segment length=\axialspringsegm,}] 
 	(\axialspringx, \axialspringy) --
-	node[anchor=west, inner sep=1pt, color=black,
+	node[anchor=west, inner sep=1pt, color=\axialtextcolor,
 	xshift=\axialtextshiftx, yshift=\axialtextshifty]{\axialspringtext}
 	++(0,-\axialspringlength);
 	
