@@ -10,7 +10,9 @@
   sign bump ratio = 2,
   sign location ratio = 0.5,
   line thickness = 2pt,
-  line color = black,},
+  line color = black,
+  fill color a=gray,
+  fill color b=white,},
   startx/.store in =\startx,
   starty/.store in =\starty,
   endx/.store in =\endx,
@@ -21,6 +23,8 @@
   sign location ratio/.store in =\signlocratio,
   line thickness/.store in =\linewid,
   line color/.store in =\lcolor,
+  fill color a/.store in =\fillcolora,
+  fill color b/.store in =\fillcolorb,
 }
 
 
@@ -67,6 +71,14 @@ real \gam, \alp, \bet, \curvang, \curvlen;
 
 
 \begin{scope}[x=1pt, y=1pt];    % Draw everything in pt units
+	
+\filldraw[\fillcolora, draw=\fillcolora, line width=\linewid/2] (\midx{1}, \midy{1})
+.. controls ++(\curvang{1}:\newcurvlen) and ++(\curvang{2}:\newcurvlen) ..
+(\midx{2}, \midy{2}) -- cycle;
+
+\filldraw[\fillcolorb, draw=\fillcolorb, line width=\linewid/2] (\midx{2}, \midy{2})
+.. controls ++(\curvang{3}:\newcurvlen) and ++(\curvang{4}:\newcurvlen) ..
+(\midx{3}, \midy{3})  -- cycle;
 
 \draw[line width=\linewid, \lcolor] (\startx,\starty) -- (\midx{1}, \midy{1})
 .. controls ++(\curvang{1}:\newcurvlen) and ++(\curvang{2}:\newcurvlen) ..

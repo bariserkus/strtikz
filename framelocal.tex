@@ -284,6 +284,7 @@ if \rotationangle < 5 then {\placeangle=0;};
 \endoffsety = \endoffsety;
 if equal(\placeyzdofsonly,1) then {
 \localxstart = \localxstartoffset + \lengthofelement + \jdofnodaloffsetx;
+\placeidofx=0; \placejdofx=0;
 %\idofnodaloffsety=0;
 }
 else {\localxstart = \localxstartoffset + \lengthofelement + \lengthdofsjx + \jdofnodaloffsetx;};
@@ -320,17 +321,24 @@ if equal(\showdeep,1) then {
 \draw [line width = \dashedthk, dashed, opacity=\dashedopa] (0,0) -- (\lengthofelement,0);
 
 \path [] (0,0)
-node[inner sep=\jointinnersepi, outer sep=0, anchor=\rotationangle+\startjointangle]{\jointtextfontsize \jointitext} -- (\lengthofelement,0)
-node[inner sep=\jointinnersepj, outer sep=0, anchor=\rotationangle+\endjointangle]{\jointtextfontsize \jointjtext}
-node[midway, inner sep=\halfbeamtotaldepth+1pt, \propertyloc, rotate=\propertyrotation]{\lengthpropfontsize \propertiestext};
+node[inner sep=\jointinnersepi, outer sep=0, anchor=\rotationangle+\startjointangle]
+{\jointtextfontsize \jointitext} -- (\lengthofelement,0)
+node[inner sep=\jointinnersepj, outer sep=0, anchor=\rotationangle+\endjointangle]
+{\jointtextfontsize \jointjtext}
+node[midway, outer sep=\halfbeamtotaldepth+1pt, \propertyloc, rotate=\propertyrotation, inner sep=0,
+text width=\lengthofelement, align=center, sloped]
+{\lengthpropfontsize \propertiestext};
 }{
 
 % Using Line
 
 \path [line width = \linethickness, draw=black, postaction={on each segment={mid arrow=black}}] (0,0)
-node[inner sep=\jointinnersepi, outer sep=0, anchor=\rotationangle+\startjointangle]{\jointtextfontsize \jointitext} -- (\lengthofelement,0)
-node[inner sep=\jointinnersepj, outer sep=0, anchor=\rotationangle+\endjointangle]{\jointtextfontsize \jointjtext}
-node[midway, \propertyloc, rotate=\propertyrotation]{\lengthpropfontsize \propertiestext};
+node[inner sep=\jointinnersepi, outer sep=0, anchor=\rotationangle+\startjointangle]
+{\jointtextfontsize \jointitext} -- (\lengthofelement,0)
+node[inner sep=\jointinnersepj, outer sep=0, anchor=\rotationangle+\endjointangle]
+{\jointtextfontsize \jointjtext}
+node[midway, \propertyloc, rotate=\propertyrotation, text width=\lengthofelement, align=center]
+{\lengthpropfontsize \propertiestext};
 }
 
 %Place the dots at the ends of the frame element
