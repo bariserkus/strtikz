@@ -93,6 +93,7 @@ for \i in {2,...,{\loadarrownumber-1}}{
 % print {$\loaddxf$};
 }
 
+%%% NOTE: Refactor to be compatible with the Figures arrow styles:
 \tikzset{
 forcearr/.style={
 arrows={<[length=\arrlen, width=\arrwid, scale=\arrscale, flex=1, bend]-}  }
@@ -108,6 +109,7 @@ forcearrarr/.style={
 arrows={<[length=\arrlen, width=\arrwid, scale=\arrscale, flex=1, bend]-
 >[length=\arrlen, width=\arrwid, scale=\arrscale, flex=1, bend]}  }
 };
+%%% NOTE: Refactor to be compatible with the Figures arrow styles:
 
 \begin{scope}[x=1pt, y=1pt]; % Drawing everything in pt units
 \foreach \i in {2,...,\loadarrownumbermo}{
