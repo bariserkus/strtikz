@@ -1,0 +1,159 @@
+\pgfkeys{
+/framedistributedcurveload/.is family, /framedistributedcurveload,
+default/.style={
+startx = 0cm,
+starty = 0cm,
+endx = 5cm,
+endy = 0cm,
+number of arrows = 10,
+height of arrows = 0.5cm,
+space = 0.1cm,
+start ratio = 0.02,
+end ratio = 0.02,
+load text = $\SI{10}{\kilo\newton/\meter}$,
+text shiftx=0pt,
+text shifty=0pt,
+arrow length=5pt,
+arrow width=3pt,
+arrow scale=1,
+arrow line thickness=1pt,
+curve start angle=45,
+curve start distance=1.5cm,
+curve end angle=210,
+curve end distance=1cm,
+},
+startx/.store in = \loadstartcoordx,
+starty/.store in = \loadstartcoordy,
+endx/.store in = \loadendcoordx,
+endy/.store in = \loadendcoordy,
+number of arrows/.store in = \loadarrownumber,
+height of arrows/.store in = \loadarrowheight,
+space/.store in = \loadarrowspace,
+start ratio/.store in = \loadstartratio,
+end ratio/.store in = \loadendratio,
+load text/.store in = \loadtext,
+text shiftx/.store in = \textshiftx,
+text shifty/.store in = \textshifty,
+arrow length/.store in = \arrlen,
+arrow width/.store in = \arrwid,
+arrow scale/.store in = \arrscale,
+arrow line thickness/.store in = \arrlinethk,
+curve start angle/.store in = \curvestartangle,
+curve start distance/.store in = \curvestartdist,
+curve end angle/.store in = \curveendangle,
+curve end distance/.store in = \curveenddist,
+}
+
+%\loadstartcoordx: starting coordinate x
+%\loadstartcoordy: starting coordinate y
+%\loadendcoordx: end coordinate x
+%\loadendcoordy: end coordinate y
+%\loadarrownumber: number of arrows
+%\loadarrowheight: height of arrows
+%\loadarrowspace: distance of arrows from the frame
+%\loadstartratio: start(first) arrow start ratio
+%\loadendratio: end (last) arrow start ratio
+\newcommand{\framedistributedcurveload}[1][]{
+\pgfkeys{/framedistributedcurveload, default, #1}
+\tikzmath{
+real \loadstartcoordx, \loadstartcoordy, \loadendcoordx, \loadendcoordy;
+real \loadangle, \loadunx, \loaduny, \loaddxf, \loaddyf;
+real \loaddxa, \loaddya, \loadaaa, \loadbbb;
+real \loadxvalue, \loadyvalue;
+real \loadwxvalue, \loadwyvalue, \loadarrowheight, \loadstartratio, \loadendratio, \lenf;
+int \loadarrownumber, \loadarrownumbermo, \i, \j;
+real \rnarr;
+real \arrlen, \arrwid, \arrscale, \arrlinethk;
+real \textshiftx, \textshifty;
+%Conversion all units to the unit pt
+\loadstartcoordx = \loadstartcoordx;
+\loadstartcoordy = \loadstartcoordy;
+\loadendcoordx = \loadendcoordx;
+\loadendcoordy = \loadendcoordy;
+\loadarrowheight = \loadarrowheight;
+\loadarrowspace = \loadarrowspace;
+\arrlen=\arrlen;
+\arrwid=\arrwid;
+\arrlinethk=\arrlinethk;
+\textshiftx=\textshiftx;
+\textshifty=\textshifty;
+\curvestartdist=\curvestartdist;
+\curveenddist=\curveenddist;
+%End conversion, All values are now in pt units.
+\loaddxf = (\loadendcoordx-\loadstartcoordx); %dx for the whole frame
+\loaddyf = (\loadendcoordy-\loadstartcoordy); %dy for the whole frame
+\lenf = veclen(\loaddxf, \loaddyf);
+\loadangle = atan2(\loaddyf,\loaddxf);
+\loaddxa = \loaddxf*(1-(\loadstartratio+\loadendratio)); %dx for the start and end of arrow
+\loaddya = \loaddyf*(1-(\loadstartratio+\loadendratio)); %dy for the start and end of arrow
+\lena = veclen(\loaddxa, \loaddya);
+\rnarr = \loadarrownumber;
+\loadwxvalue = (\loaddxa)/(\rnarr-1); %dx for the single arrow
+\loadwyvalue = (\loaddya)/(\rnarr-1); %dx for the single arrow
+\loadxvalue{1} = \loadstartcoordx + \loaddxf*(\loadstartratio);
+\loadyvalue{1} = \loadstartcoordy + \loaddyf*(\loadstartratio);
+\loadxvalue{\loadarrownumber} = \loadendcoordx - \loaddxf*(\loadendratio);
+\loadyvalue{\loadarrownumber} = \loadendcoordy - \loaddyf*(\loadendratio);
+for \i in {2,...,{\loadarrownumber-1}}{
+\loadxvalue{\i} = \loadxvalue{1} + (\i-1)*\loadwxvalue;
+\loadyvalue{\i} = \loadyvalue{1} + (\i-1)*\loadwyvalue;
+};
+\loadarrownumbermo = \loadarrownumber-1;
+\loc = ifthenelse(\loadarrowheight>=0,"above","below");
+%Curved Load Parameters
+\startangle=\curvestartangle+\loadangle;
+\startradius=\curvestartdist;
+\endangle=\curveendangle+\loadangle;
+\endradius=\curveenddist;
+% print {$\loaddxf$};
+}
+
+%%% NOTE: Refactor to be compatible with the Figures arrow styles:
+\tikzset{
+forcearr/.style={
+arrows={<[length=\arrlen, width=\arrwid, scale=\arrscale, flex=1, bend]-}}
+};
+
+\tikzset{
+arrforce/.style={
+arrows={->[length=\arrlen, width=\arrwid, scale=\arrscale, flex=1, bend]}}
+};
+
+\tikzset{
+forcearrarr/.style={
+arrows={<[length=\arrlen, width=\arrwid, scale=\arrscale, flex=1, bend]-
+>[length=\arrlen, width=\arrwid, scale=\arrscale, flex=1, bend]}}
+};
+%%% NOTE: Refactor to be compatible with the Figures arrow styles:
+
+\begin{scope}[x=1pt, y=1pt]; % Drawing everything in pt units
+
+\path [forcearrarr, line width=\arrlinethk]
+(\loadxvalue{1},\loadyvalue{1}) ++(90+\loadangle:\loadarrowspace)--
+++(90+\loadangle:\loadarrowheight) --
+node[\loc,midway,sloped, xshift=\textshiftx, yshift=\textshifty]{\loadtext}
+++(\loadangle:\lena)-- ++(-90+\loadangle:\loadarrowheight);
+
+\draw [name path=loadcurve, forcearrarr, line width=\arrlinethk]
+(\loadxvalue{1},\loadyvalue{1}) ++(90+\loadangle:\loadarrowspace) --
+++(90+\loadangle:\loadarrowheight) .. controls ++(\startangle:\startradius) and ++(\endangle:\endradius) ..
+++(\loadangle:\lena)-- ++(-90+\loadangle:\loadarrowheight);
+
+
+\foreach \i in {2,...,\loadarrownumbermo}{
+
+\path[name path=loadarrow]
+(\loadxvalue{\i}, \loadyvalue{\i})
+++(90+\loadangle:\loadarrowspace) --
+++(90+\loadangle:2*\loadarrowheight);
+
+\path[name intersections={of=loadcurve and loadarrow, by=loadarrowend}];
+
+\draw [forcearr, line width=\arrlinethk]
+(\loadxvalue{\i}, \loadyvalue{\i})
+++(90+\loadangle:\loadarrowspace) --
+(loadarrowend);}
+
+\end{scope}
+}
+
