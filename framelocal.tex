@@ -108,6 +108,7 @@ global y axis text = $Y$,
 arrow size ratio=1,
 arrow tip length=6pt,
 arrow tip width=4pt,
+dof line thickness=0.5pt,
 dof arrow size ratio=1,
 dof arrow tip length=4pt,
 dof arrow tip width=2pt,},
@@ -218,6 +219,7 @@ global y axis text/.store in = \globalytext,
 arrow size ratio/.store in = \arrsizrat,
 arrow tip length/.store in = \arrlen,
 arrow tip width/.store in = \arrwid,
+dof line thickness/.store in = \doflinethickness,
 dof arrow size ratio/.store in = \dofarrtipsizrat,
 dof arrow tip length/.store in = \dofarrtiplen,
 dof arrow tip width/.store in = \dofarrtipwid,}
@@ -271,6 +273,7 @@ int \placelocalxaxes, \placelocalyaxes;
 \rotationanglex = \rotationanglex;
 \arrlen = \arrlen;
 \arrwid = \arrwid;
+\doflinethickness=\doflinethickness;
 \dofarrtiplen = \dofarrtiplen;
 \dofarrtipwid = \dofarrtipwid;
 \beamdepth=\beamdepth;
@@ -371,6 +374,7 @@ rotation=\dofsroti, font rotation=\rotationangle+\inodedoftextrot,
 font rotation for x = \inodexdoftextrot+\rotationangle,
 font rotation for y = \inodeydoftextrot+\rotationangle,
 font rotation for r = \inoderdoftextrot+\rotationangle,
+dof line thickness=\doflinethickness,
 dof arrow size ratio=\dofarrtipsizrat, dof arrow tip length=\dofarrtiplen,
 dof arrow tip width=\dofarrtipwid,
 show dofx=\placeidofx, show dofy=\placeidofy, show dofr=\placeidofz,];
@@ -387,6 +391,7 @@ rotation=\dofsrotj, font rotation=\rotationangle+\jnodedoftextrot,
 font rotation for x = \jnodexdoftextrot+\rotationangle,
 font rotation for y = \jnodeydoftextrot+\rotationangle,
 font rotation for r = \jnoderdoftextrot+\rotationangle,
+dof line thickness=\doflinethickness,
 dof arrow size ratio=\dofarrtipsizrat, dof arrow tip length=\dofarrtiplen,
 dof arrow tip width=\dofarrtipwid,
 show dofx=\placejdofx, show dofy=\placejdofy, show dofr=\placejdofz,];
