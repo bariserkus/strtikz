@@ -154,13 +154,16 @@ superstructure mark line type=dashed,
 superstructure mark line color=red,
 phorizontal show springs=1,
 phorizontal number of springs = 5,
+phorizontal mirror springs=0,
 phorizontal space = 0.25cm,
 phorizontal start ratio = 0.05,
 phorizontal end ratio = 0.05,
-phorizontal spring text = {},
+phorizontal spring text = {$p-y$ Spring},
 phorizontal text color = black,
 phorizontal text shiftx=0pt,
 phorizontal text shifty=0pt,
+phorizontal text location=above,
+phorizontal spring length=0.5cm,
 phorizontal spring prelength ratio=0.2,
 phorizontal spring postlength ratio=0.2,
 phorizontal spring segment=0.15cm,
@@ -181,7 +184,7 @@ pvertical space between springs=0.15cm,
 pvertical space=0.0cm,
 pvertical start ratio=0.1,
 pvertical end ratio=0.1,
-pvertical spring text={},
+pvertical spring text={$t-z$ Spring},
 pvertical text color=black,
 pvertical text shiftx=0pt,
 pvertical text shifty=0pt,
@@ -199,7 +202,7 @@ pvertical support line thickness=1pt,
 pvertical show support shade=1,
 pvertical support shade color=gray,
 paxial show spring=1,
-paxial spring text = {},
+paxial spring text = {$Q-z$ Spring},
 paxial text color = black,
 paxial text shiftx=0pt,
 paxial text shifty=0pt,
@@ -215,6 +218,12 @@ paxial support depth = 0.1cm,
 paxial support line thickness = 1pt,
 paxial show support shade=1,
 paxial support shade color=gray,
+pile show frames=1,
+pframe number=10,
+pframe circle radius=1pt,
+pframe line thickness=1pt,
+pframe line color=blue,
+pframe line type=dashed,
 left wall show springs=0,
 left wall number of springs = 5,
 left wall spring space = 0.0cm,
@@ -471,6 +480,7 @@ superstructure mark line type/.store in=\marksuperlinetype,
 superstructure mark line color/.store in=\marksuperlinecolor,
 phorizontal show springs/.store in = \showphorizontalsprings,
 phorizontal number of springs/.store in = \phorspringnumber,
+phorizontal mirror springs/.store in =\phormirrorspring,
 phorizontal space/.store in = \phorspringspace,
 phorizontal start ratio/.store in = \phorspringstartratio,
 phorizontal end ratio/.store in = \phorspringendratio,
@@ -478,6 +488,8 @@ phorizontal spring text/.store in = \phorspringtext,
 phorizontal text color/.store in = \phortextcolor,
 phorizontal text shiftx/.store in = \phortextshiftx,
 phorizontal text shifty/.store in = \phortextshifty,
+phorizontal text location/.store in = \phortextloc,
+phorizontal spring length/.store in = \phorspringlength,
 phorizontal spring prelength ratio/.store in = \phorprelenratio,
 phorizontal spring postlength ratio/.store in = \phorpostlenratio,
 phorizontal spring segment/.store in = \phorsegm,
@@ -532,6 +544,12 @@ paxial support depth/.store in = \paxialsuppdepth,
 paxial support line thickness/.store in = \paxialsupplinethk,
 paxial show support shade/.store in = \paxialshowsuppshade,
 paxial support shade color/.store in = \paxialsuppshadecol,
+pile show frames/.store in=\showpframes,
+pframe number/.store in=\pframenumber,
+pframe circle radius/.store in=\pframecirclerad,
+pframe line thickness/.store in=\pframelinethk,
+pframe line color/.store in=\pframelinecolor,
+pframe line type/.store in=\pframelinetype,
 left wall show springs/.store in=\leftwshowsprings,
 left wall number of springs/.store in =\leftwspringnumber,
 left wall spring space/.store in =\leftwspringspace,
@@ -638,6 +656,8 @@ bottom pin support rotation/.store in=\bottomrotpin,}
 \newcommand{\framestructure}[1][]{
 \pgfkeys{/framestructure, default, #1}
 \tikzmath{
+int \showpframes, \pframenumber;
+real \pframecirclerad, \pframelinethk;
 int \storynumber, \baynumber, \columnnumber, \levelnumber, \storyminone;
 int \nlevmo, \ncolmo, \iii, \j, \pileind;
 real \storyheight, \baywidth, \startx, \starty, \xx, \y;
@@ -701,11 +721,11 @@ real \marksuperdeltax, \marksuperdeltay;
 int \leftstory, \leftlevel, \rightstory, \rightlevel;
 int \leftopenstory, \rightopenstory, \showopenstory;
 real \leftwallh, \leftopenh, \rightwallh, \rightopenh, \diffwallh;
-int \showphorizontalsprings, \phorspringnumber;
+int \showphorizontalsprings, \phorspringnumber, \phormirrorspring;
 real \phorspringspace, \phorspringstartratio, \phorspringendratio;
 real \phortextshiftx, \phortextshifty, \phorprelenratio, \phorpostlenratio;
 real \phorsegm, \phorsprwid, \phorsprscale, \phorsprlinethk;
-real \phorsuppwidth, \phorsuppdepth, \phorsupplinethk,
+real \phorsuppwidth, \phorsuppdepth, \phorsupplinethk, \phorspringlength,
 int \phorshowsuppshade;
 int \showpverticalsprings, \pverspringnumber, \pvershowlastspring, \pvermirrorspring;
 real \pverspringspace, \pverspringstartratio, \pverspringendratio;
@@ -758,6 +778,8 @@ int \bottomshowcircle;
 real \bottomrotpin;
 real \hsdistleft, \hsdistright, \hsdistbottom, \hsinnerlinethk, \thinlinethk;
 %Conversion all units to the unit pt
+\pframecirclerad=\pframecirclerad;
+\pframelinethk=\pframelinethk;
 \hsdistleft=\hsdistleft;
 \hsdistright=\hsdistright;
 \hsdistbottom=\hsdistbottom;
@@ -1328,7 +1350,7 @@ boundary line color=\pblinecolor,
 boundary line type=\pblinetype,
 horizontal show springs= \showphorizontalsprings,
 horizontal number of springs = \phorspringnumber,
-horizontal mirror springs=0,
+horizontal mirror springs=\phormirrorspring,
 horizontal space = \phorspringspace,
 horizontal start ratio = \phorspringstartratio,
 horizontal end ratio = \phorspringendratio,
@@ -1336,8 +1358,8 @@ horizontal spring text = \phorspringtext,
 horizontal text color = \phortextcolor,
 horizontal text shiftx= \phortextshiftx,
 horizontal text shifty= \phortextshifty,
-horizontal text location=above,
-horizontal spring length=0.5cm,
+horizontal text location=\phortextloc,
+horizontal spring length=\phorspringlength,
 horizontal spring prelength ratio= \phorprelenratio,
 horizontal spring postlength ratio= \phorpostlenratio,
 horizontal spring segment= \phorsegm,
@@ -1392,14 +1414,15 @@ axial support depth = \paxialsuppdepth,
 axial support line thickness = \paxialsupplinethk,
 axial show support shade= \paxialshowsuppshade,
 axial support shade color= \paxialsuppshadecol,
-show frames=1,
-frame number=10,
-frame circle radius=1pt,
-frame line thickness=1pt,
-frame line color=blue,
-frame line type=dashed,]}
+show frames=\showpframes,
+frame number=\pframenumber,
+frame circle radius=\pframecirclerad,
+frame line thickness=\pframelinethk,
+frame line color=\pframelinecolor,
+frame line type=\pframelinetype,]}
 	}{}
 	
+
 	
 	%%% Left Wall Springs
 	\ifthenelse{\leftwshowsprings=1}{
