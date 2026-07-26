@@ -154,8 +154,6 @@ superstructure mark line type=dashed,
 superstructure mark line color=red,
 phorizontal show springs=1,
 phorizontal number of springs = 5,
-phorizontal spring direction = 1,
-phorizontal space between springs = 0.15cm,
 phorizontal space = 0.25cm,
 phorizontal start ratio = 0.05,
 phorizontal end ratio = 0.05,
@@ -175,16 +173,19 @@ phorizontal support depth=0.1cm,
 phorizontal support line thickness=1pt,
 phorizontal show support shade=1,
 phorizontal support shade color=gray,
-pvertical show springs=1,
-pvertical number of springs = 5,
-pvertical space = 0.0cm,
-pvertical start ratio = 0.1,
-pvertical end ratio = 0.1,
-pvertical spring text = {},
-pvertical text color = black,
+pvertical show springs=1
+pvertical number of springs=5,
+pvertical show last spring=0,
+pvertical mirror springs=0,
+pvertical space between springs=0.15cm,
+pvertical space=0.0cm,
+pvertical start ratio=0.1,
+pvertical end ratio=0.1,
+pvertical spring text={},
+pvertical text color=black,
 pvertical text shiftx=0pt,
 pvertical text shifty=0pt,
-pvertical spring length=0.5cm,
+pvertical text location=above,
 pvertical spring prelength ratio=0.15,
 pvertical spring postlength ratio=0.15,
 pvertical spring width=0.1cm,
@@ -193,8 +194,8 @@ pvertical spring scale=1,
 pvertical spring line thickness=1pt,
 pvertical spring color=black,
 pvertical support width=0.3cm,
-pvertical support depth = 0.1cm,
-pvertical support line thickness = 1pt,
+pvertical support depth=0.1cm,
+pvertical support line thickness=1pt,
 pvertical show support shade=1,
 pvertical support shade color=gray,
 paxial show spring=1,
@@ -470,8 +471,6 @@ superstructure mark line type/.store in=\marksuperlinetype,
 superstructure mark line color/.store in=\marksuperlinecolor,
 phorizontal show springs/.store in = \showphorizontalsprings,
 phorizontal number of springs/.store in = \phorspringnumber,
-phorizontal spring direction/.store in = \phorspringdir,
-phorizontal space between springs/.store in = \phorspbtwspr,
 phorizontal space/.store in = \phorspringspace,
 phorizontal start ratio/.store in = \phorspringstartratio,
 phorizontal end ratio/.store in = \phorspringendratio,
@@ -493,6 +492,9 @@ phorizontal show support shade/.store in = \phorshowsuppshade,
 phorizontal support shade color/.store in = \phorsuppshadecol,
 pvertical show springs/.store in = \showpverticalsprings,
 pvertical number of springs/.store in = \pverspringnumber,
+pvertical show last spring/.store in = \pvershowlastspring,
+pvertical mirror springs/.store in = \pvermirrorspring,
+pvertical space between springs/.store in = \pverspbtwspr,
 pvertical space/.store in = \pverspringspace,
 pvertical start ratio/.store in = \pverspringstartratio,
 pvertical end ratio/.store in = \pverspringendratio,
@@ -500,7 +502,7 @@ pvertical spring text/.store in = \pverspringtext,
 pvertical text color/.store in = \pvertextcolor,
 pvertical text shiftx/.store in = \pvertextshiftx,
 pvertical text shifty/.store in = \pvertextshifty,
-pvertical spring length/.store in = \pverspringlength,
+pvertical text location/.store in = \pvertextloc,
 pvertical spring prelength ratio/.store in = \pverprelenratio,
 pvertical spring postlength ratio/.store in = \pverpostlenratio,
 pvertical spring width/.store in = \pverampl,
@@ -699,17 +701,17 @@ real \marksuperdeltax, \marksuperdeltay;
 int \leftstory, \leftlevel, \rightstory, \rightlevel;
 int \leftopenstory, \rightopenstory, \showopenstory;
 real \leftwallh, \leftopenh, \rightwallh, \rightopenh, \diffwallh;
-int \showphorizontalsprings, \phorspringnumber, \phorspringdir;
-real \phorspbtwspr, \phorspringspace, \phorspringstartratio, \phorspringendratio;
+int \showphorizontalsprings, \phorspringnumber;
+real \phorspringspace, \phorspringstartratio, \phorspringendratio;
 real \phortextshiftx, \phortextshifty, \phorprelenratio, \phorpostlenratio;
 real \phorsegm, \phorsprwid, \phorsprscale, \phorsprlinethk;
 real \phorsuppwidth, \phorsuppdepth, \phorsupplinethk,
 int \phorshowsuppshade;
-int \showpverticalsprings, \pverspringnumber;
-real \pverspringspace, \pverspringstartratio, \pverspringendratio,
-real \pvertextshiftx, \pvertextshifty, \pverspringlength, \pverprelenratio, \pverpostlenratio;
+int \showpverticalsprings, \pverspringnumber, \pvershowlastspring, \pvermirrorspring;
+real \pverspringspace, \pverspringstartratio, \pverspringendratio;
+real \pvertextshiftx, \pvertextshifty, \pverprelenratio, \pverpostlenratio;
 real \pverampl, \pversegm, \pverspringscale, \pverspringthk;
-real \pversuppwidth, \pversuppdepth, \pversupplinethk;
+real \pversuppwidth, \pversuppdepth, \pversupplinethk, \pverspbtwspr;
 int \pvershowsuppshade;
 int \showpaxialspring;
 real \pvertextshiftx, \pvertextshifty;
@@ -825,7 +827,6 @@ real \hsdistleft, \hsdistright, \hsdistbottom, \hsinnerlinethk, \thinlinethk;
 \marksuperexspace=\marksuperexspace;
 \marksuperrad=\marksuperrad;
 \marksuperlinet=\marksuperlinet;
-\phorspbtwspr=\phorspbtwspr;
 \phorspringspace=\phorspringspace;
 \phortextshiftx=\phortextshiftx;
 \phortextshifty=\phortextshifty;
@@ -836,9 +837,9 @@ real \hsdistleft, \hsdistright, \hsdistbottom, \hsinnerlinethk, \thinlinethk;
 \phorsuppdepth=\phorsuppdepth;
 \phorsupplinethk=\phorsupplinethk;
 \pverspringspace=\pverspringspace;
+\pverspbtwspr=\pverspbtwspr;
 \pvertextshiftx=\pvertextshiftx;
 \pvertextshifty=\pvertextshifty;
-\pverspringlength=\pverspringlength;
 \pverampl=\pverampl;
 \pversegm=\pversegm;
 \pverspringthk=\pverspringthk;
@@ -1314,18 +1315,20 @@ for \ibot in {2,...,{\nbotpin}}{
 	%%% Piles
 	\ifthenelse{\showpiles=1}{
 		\foreach \pileind in {1,...,{\numberofpiles}}
-		{\pilesupport[x coordinate=\pilecoordx{\pileind},
-			y coordinate=\pilecoordy,
-			pile depth=\piledepth, pile diameter=\pilediameter,
-			pile line thickness=\pilelinethickness, fill color=\pilefillcolor,
-			draw boundary line=\showpbline,
-			boundary line thickness=\pblinet,
-			boundary line color=\pblinecolor,
-			boundary line type=\pblinetype,
-			horizontal show springs= \showphorizontalsprings,
+		{\pilesupport[%
+x coordinate=\pilecoordx{\pileind},
+y coordinate=\pilecoordy,
+pile depth=\piledepth,
+pile diameter=\pilediameter,
+pile line thickness=\pilelinethickness,
+fill color=\pilefillcolor,
+draw boundary line=\showpbline,
+boundary line thickness=\pblinet,
+boundary line color=\pblinecolor,
+boundary line type=\pblinetype,
+horizontal show springs= \showphorizontalsprings,
 horizontal number of springs = \phorspringnumber,
-horizontal spring direction = \phorspringdir,
-horizontal space between springs = \phorspbtwspr,
+horizontal mirror springs=0,
 horizontal space = \phorspringspace,
 horizontal start ratio = \phorspringstartratio,
 horizontal end ratio = \phorspringendratio,
@@ -1333,6 +1336,8 @@ horizontal spring text = \phorspringtext,
 horizontal text color = \phortextcolor,
 horizontal text shiftx= \phortextshiftx,
 horizontal text shifty= \phortextshifty,
+horizontal text location=above,
+horizontal spring length=0.5cm,
 horizontal spring prelength ratio= \phorprelenratio,
 horizontal spring postlength ratio= \phorpostlenratio,
 horizontal spring segment= \phorsegm,
@@ -1347,14 +1352,17 @@ horizontal show support shade= \phorshowsuppshade,
 horizontal support shade color= \phorsuppshadecol,
 vertical show springs= \showpverticalsprings,
 vertical number of springs = \pverspringnumber,
+vertical show last spring=\pvershowlastspring,
+vertical mirror springs=\pvermirrorspring,
+vertical space between springs=\pverspbtwspr,
 vertical space = \pverspringspace,
 vertical start ratio = \pverspringstartratio,
 vertical end ratio = \pverspringendratio,
 vertical spring text = \pverspringtext,
-vertical text color=\pvertextcolor
+vertical text color=\pvertextcolor,
 vertical text shiftx= \pvertextshiftx,
 vertical text shifty= \pvertextshifty,
-vertical spring length= \pverspringlength,
+vertical text location=\pvertextloc,
 vertical spring prelength ratio= \pverprelenratio,
 vertical spring postlength ratio= \pverpostlenratio,
 vertical spring width= \pverampl,
@@ -1383,7 +1391,13 @@ axial support width= \paxialsuppwidth,
 axial support depth = \paxialsuppdepth,
 axial support line thickness = \paxialsupplinethk,
 axial show support shade= \paxialshowsuppshade,
-axial support shade color= \paxialsuppshadecol,]}
+axial support shade color= \paxialsuppshadecol,
+show frames=1,
+frame number=10,
+frame circle radius=1pt,
+frame line thickness=1pt,
+frame line color=blue,
+frame line type=dashed,]}
 	}{}
 	
 	
