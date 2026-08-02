@@ -117,26 +117,30 @@ if \fontrotationr==0 then {\fontrotationr=\fontrotation;} else {\fontrotationr=\
 %Draw x DOF
 \ifthenelse{\showdofx=1}{
 \draw [arrowdof, line width=\doflinethk] (\offsetdofx-\doflinethk/2,\offsetdofy) 
--- node[at end, inner sep=\dofinsepx, outer sep=0pt, anchor=180+\fontrotationx, pos=\dofpositionx, scale=\doftextscale]
+-- node[at end, inner sep=\dofinsepx, outer sep=0pt, anchor=180+\fontrotationx,
+pos=\dofpositionx, scale=\doftextscale]
 {\doftextsize \xdoftext} ++(\lengthdofx,0);
 }{;};
 
 \ifthenelse{\showdofx=-1}{
 \draw [arrowdof, line width=\doflinethk] (\offsetdofx+\doflinethk/2,\offsetdofy) 
--- node[at end, inner sep=\dofinsepx, outer sep=0pt, anchor=180+\fontrotationx, pos=\dofpositionx, scale=\doftextscale]
+-- node[at end, inner sep=\dofinsepx, outer sep=0pt, anchor=180+\fontrotationx,
+pos=\dofpositionx, scale=\doftextscale]
 {\doftextsize \xdoftext} ++(-\lengthdofx,0);
 }{;};
 
 %Draw y DOF
 \ifthenelse{\showdofy=1}{
 \draw [arrowdof, line width=\doflinethk] (\offsetdofx,\offsetdofy) 
--- node[at end, inner sep=\dofinsepy, outer sep=0pt, anchor=270+\fontrotationy, pos=\dofpositiony, scale=\doftextscale]
+-- node[at end, inner sep=\dofinsepy, outer sep=0pt, anchor=270+\fontrotationy,
+pos=\dofpositiony, scale=\doftextscale]
 {\doftextsize \ydoftext} ++(0,\lengthdofy);
 }{;};
 
 \ifthenelse{\showdofy=-1}{
 \draw [arrowdof, line width=\doflinethk] (\offsetdofx,\offsetdofy) 
--- node[at end, inner sep=\dofinsepy, outer sep=0pt, anchor=270+\fontrotationy, pos=\dofpositiony, scale=\doftextscale]
+-- node[at end, inner sep=\dofinsepy, outer sep=0pt, anchor=270+\fontrotationy,
+pos=\dofpositiony, scale=\doftextscale]
 {\doftextsize \ydoftext} ++(0,-\lengthdofy);
 }{;};
 
@@ -144,16 +148,20 @@ if \fontrotationr==0 then {\fontrotationr=\fontrotation;} else {\fontrotationr=\
 %\draw [arrowdof, line width=\doflinethk] (\offsetcenter,0) -- node[at end, inner sep=1pt, outer sep=0pt, anchor=180+\rotationdofcenter]{\doftextsize \xdoftext} ++(\lengthdofx,0);
 %\draw [arrowdof, line width=\doflinethk] (0, \offsetcenter) -- node[at end, inner sep=1pt, outer sep=0pt, anchor=270+\rotationdofcenter]{\doftextsize \ydoftext}++(0,\lengthdofy);
 \ifthenelse{\showdofr=1}{
-\draw [arrowdof, line width=\doflinethk] (\rotdofstartang:\rotdofradius) ++(\offsetrotx,\offsetroty)
+\draw [arrowdof, line width=\doflinethk]
+(\rotdofstartang:\rotdofradius) ++(\offsetrotx,\offsetroty)
 arc [start angle=\rotdofstartang, end angle=\rotdofendang, radius=\rotdofradius]
-node[at end, inner sep=\dofinsepr, outer sep=0pt, anchor=\rotdofendang+\fontrotationr-90, pos=\dofpositionr, scale=\doftextscale]
+node[at end, inner sep=\dofinsepr, outer sep=0pt, anchor=\rotdofendang+\fontrotationr-90,
+pos=\dofpositionr, scale=\doftextscale]
 {\doftextsize \rotdoftext};
 }{;};
 
 \ifthenelse{\showdofr=-1}{
-\draw [arrowdof, line width=\doflinethk] (\rotdofendang:\rotdofradius) ++(\offsetrotx,\offsetroty)
+\draw [arrowdof, line width=\doflinethk]
+(\rotdofendang:\rotdofradius) ++(\offsetrotx,\offsetroty)
 arc [start angle=\rotdofendang, end angle=\rotdofstartang, radius=\rotdofradius]
-node[at end, inner sep=\dofinsepr, outer sep=0pt, anchor=\rotdofendang+\fontrotationr-90, pos=\dofpositionr, scale=\doftextscale]
+node[at end, inner sep=\dofinsepr, outer sep=0pt, anchor=\rotdofendang+\fontrotationr-90,
+pos=\dofpositionr, scale=\doftextscale]
 {\doftextsize \rotdoftext};
 }{;};
 

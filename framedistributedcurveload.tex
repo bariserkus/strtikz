@@ -11,6 +11,7 @@ space = 0.1cm,
 start ratio = 0.02,
 end ratio = 0.02,
 load text = $\SI{10}{\kilo\newton/\meter}$,
+load text scale = 1.0,
 text shiftx=0pt,
 text shifty=0pt,
 arrow length=5pt,
@@ -32,6 +33,7 @@ space/.store in = \loadarrowspace,
 start ratio/.store in = \loadstartratio,
 end ratio/.store in = \loadendratio,
 load text/.store in = \loadtext,
+load text scale/.store in = \loadtextscale,
 text shiftx/.store in = \textshiftx,
 text shifty/.store in = \textshifty,
 arrow length/.store in = \arrlen,
@@ -59,7 +61,7 @@ curve end distance/.store in = \curveenddist,
 real \loadstartcoordx, \loadstartcoordy, \loadendcoordx, \loadendcoordy;
 real \loadangle, \loadunx, \loaduny, \loaddxf, \loaddyf;
 real \loaddxa, \loaddya, \loadaaa, \loadbbb;
-real \loadxvalue, \loadyvalue;
+real \loadxvalue, \loadyvalue, \loadtextscale;
 real \loadwxvalue, \loadwyvalue, \loadarrowheight, \loadstartratio, \loadendratio, \lenf;
 int \loadarrownumber, \loadarrownumbermo, \i, \j;
 real \rnarr;
@@ -131,7 +133,7 @@ arrows={<[length=\arrlen, width=\arrwid, scale=\arrscale, flex=1, bend]-
 \path [forcearrarr, line width=\arrlinethk]
 (\loadxvalue{1},\loadyvalue{1}) ++(90+\loadangle:\loadarrowspace)--
 ++(90+\loadangle:\loadarrowheight) --
-node[\loc,midway,sloped, xshift=\textshiftx, yshift=\textshifty]{\loadtext}
+node[\loc,midway,sloped, xshift=\textshiftx, yshift=\textshifty, scale=\loadtextscale]{\loadtext}
 ++(\loadangle:\lena)-- ++(-90+\loadangle:\loadarrowheight);
 
 \draw [name path=loadcurve, forcearrarr, line width=\arrlinethk]

@@ -1,0 +1,4 @@
+\newcommand{\mathtotext}[1]{%
+    \pgfmathparse{#1}%
+    \pgfmathprintnumber[fixed, precision=0]{\pgfmathresult}%
+}
