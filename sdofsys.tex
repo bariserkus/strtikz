@@ -203,12 +203,14 @@ coordinate \c, \cs, \cd, \cde, \cmass, \cw, \cdisp, \cforce;
 \ifthenelse{\displaydisp=1}{
 %Draw Displacement Vector
 \draw [line width = \displinethk] (\cdisp) -- ++(0 cm, \displine pt);
-\draw [line width = \displinethk] (\cdisp) ++(0 cm, \displine*0.8 pt) [->] -- node[above, yshift=-0.1 cm]{\disptext} ++(\disparrow pt, 0 cm);
+\draw [line width = \displinethk] (\cdisp) ++(0 cm, \displine*0.8 pt) [smallforcearr] 
+-- node[above, yshift=-0.1 cm]{\disptext} ++(\disparrow pt, 0 cm);
 }{}
 
 \ifthenelse{\displayforce=1}{
 %Draw Force Vector
-\draw [line width = \forcelinethk] (\cforce) [->] -- node[above, yshift=-0.1 cm]{\forcetext} ++(\forcelength pt, 0 cm);
+\draw [line width = \forcelinethk] (\cforce) [forcearr]
+-- node[above, yshift=-0.1 cm]{\forcetext} ++(\forcelength pt, 0 cm);
 }{}
 \end{scope}
 }
