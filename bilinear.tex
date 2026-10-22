@@ -1,68 +1,90 @@
 \pgfkeys{
 /bilinear/.is family, /bilinear,
 default/.style={
-	startx = 0cm,
-	starty = 0cm,
-	yield displacement = 1cm,
-	yield force = 2cm,
-	maximum displacement = 2cm,
-	maximum force = 3cm,
-	axis space = 1cm,
-	mode = 1,
-	x-axis label = {Disp., $(d)$},
-	y-axis label = {Force, $(f)$},
-	kp text = $k_\textrm{p}$,
-	ks text = $k_\textrm{s}$,
-	fy text = $f_\textrm{y}$,
-	dy text = $d_\textrm{y}$,
-	mark yield point = 1,
-	fmax text = $f_\textrm{m}$,
-	dmax text = $d_\textrm{m}$,
-	mark max point = 1,
-	axis line thickness = 1pt,
-	line thickness = 1pt,
-	line color = black,
-	show axes labels = 1,
-	show stiffness = 1,
-	show arrows = 1,
-	show line arrows = 1,
-	arrow length = 3pt,
-	arrow width = 2pt,	
+startx = 0cm,
+starty = 0cm,
+yield displacement = 1cm,
+yield force = 2cm,
+maximum displacement = 2cm,
+maximum force = 3cm,
+axis space = 1.25cm,
+mode = 1,
+x-axis label = {$D$},
+y-axis label = {$F$},
+kp text = $k_\text{p}$,
+ks text = $k_\text{s}$,
+fy text = $f_\text{y}$,
+dy text = $d_\text{y}$,
+mark yield point = 1,
+fmax text = $f_\text{m}$,
+dmax text = $d_\text{m}$,
+mark max point = 1,
+axis line thickness = 1pt,
+line thickness = 1pt,
+line color = black,
+show axes labels = 1,
+show stiffness = 1,
+show arrows = 1,
+show line arrows = 1,
+arrow length = 3pt,
+arrow width = 2pt,
+show top border = 1,
+show bottom border = 1,
+border line color = red,
+border line thickness = 1pt,
+border line dash = dashed,
+border line opacity=0.5,
+show qy = 1,
+qy text = {$q_\text{y}$},
+show shade = 1,
+shade color = blue,
+shade opacity = 0.25,
 },
-	startx/.store in = \startx,
-	starty/.store in = \starty,
-	yield displacement/.store in = \dy,
-	yield force/.store in = \fy,
-	maximum displacement/.store in = \dm,
-	maximum force/.store in = \fm,
-	axis space/.store in = \axsp,
-	mode/.store in = \mode,
-	x-axis label/.store in = \xlab,
-	y-axis label/.store in = \ylab,
-	kp text/.store in = \kpt,
-	ks text/.store in = \kst,
-	fy text/.store in = \fyt,
-	dy text/.store in = \dyt,
-	mark yield point/.store in = \myp,
-	fmax text/.store in = \fmt,
-	dmax text/.store in = \dmt,
-	mark max point/.store in = \mmp,
-	axis line thickness/.store in = \axislinet,
-	line thickness/.store in = \bilinet,
-	line color/.store in = \linecolor,
-	show axes labels/.store in = \showaxes,
-	show stiffness/.store in = \showstiff,
-	show arrows/.store in = \showarrows,
-	show line arrows/.store in = \showlinearrows,
-	arrow length/.store in = \arrlen,
-	arrow width/.store in = \arrwid,	
+startx/.store in = \startx,
+starty/.store in = \starty,
+yield displacement/.store in = \dy,
+yield force/.store in = \fy,
+maximum displacement/.store in = \dm,
+maximum force/.store in = \fm,
+axis space/.store in = \axsp,
+mode/.store in = \mode,
+x-axis label/.store in = \xlab,
+y-axis label/.store in = \ylab,
+kp text/.store in = \kpt,
+ks text/.store in = \kst,
+fy text/.store in = \fyt,
+dy text/.store in = \dyt,
+mark yield point/.store in = \myp,
+fmax text/.store in = \fmt,
+dmax text/.store in = \dmt,
+mark max point/.store in = \mmp,
+axis line thickness/.store in = \axislinet,
+line thickness/.store in = \bilinet,
+line color/.store in = \linecolor,
+show axes labels/.store in = \showaxes,
+show stiffness/.store in = \showstiff,
+show arrows/.store in = \showarrows,
+show line arrows/.store in = \showlinearrows,
+arrow length/.store in = \arrlen,
+arrow width/.store in = \arrwid,
+show top border/.store in = \showtopborder,
+show bottom border/.store in = \showbotborder,
+border line color/.store in = \borderlinecolor,
+border line thickness/.store in = \borderlinethk,
+border line dash/.store in = \borderlinedash,
+border line opacity/.store in = \borderlineopacity,
+show qy/.store in = \showqy,
+qy text/.store in = \qyt,
+show shade/.store in = \showshade,
+shade color/.store in = \shadecolor,
+shade opacity/.store in = \shadeopacity,
 }
 \newcommand{\bilinear}[1][]{
 \pgfkeys{/bilinear, default, #1}
 \tikzmath{
 real \startx, \starty;
 real \dy, \fy, \dm, \fm, \axsp;
-real \axislinet, \bilinet;
+real \axislinet, \bilinet, \borderlinethk;
 integer \mode;
 %Conversion all units to the unit pt
 \dy = \dy;
@@ -74,16 +96,48 @@ integer \mode;
 \bilinet = \bilinet;
 \arrlen = \arrlen;
 \arrwid = \arrwid;
+\borderlinethk=\borderlinethk;
 %End conversion, All values are now in pt units
 \xmax = \dm + \axsp;
 \ymax = \fm + \axsp;
 \pyd = \dm - \dy;   %Post yield displacement
 \pyf = \fm - \fy;   %Post yield force
-\lowlevel = min(-\axsp,\fm - 2*\fy - \axsp);
+\lowlevel = min(-\axsp,\fm - 2*\fy - \axsp)-0.5cm;
 if \showaxes==0 then {\xlab={};\ylab={};} else {};
 if \showstiff==0 then {\kpt={};\kst={};} else {};
+%% Mode4 minx
+\modefourx=\dm- 2*\dy -\pyd -\axsp;
+\modefoury=\fm -2*\fy -\pyf -\axsp;
+%% Borders
+if \mode==1 then {\bordermaxx=\xmax; \borderminx=-\axsp;} else {};
+if \mode==2 then {\bordermaxx=\xmax; \borderminx=-\axsp;} else {};
+if \mode==3 then {\bordermaxx=\xmax; \borderminx=-\axsp;} else {};
+if \mode==4 then {\bordermaxx=\xmax; \borderminx=\modefourx;} else {};
+if \mode==5 then {\bordermaxx=\xmax; \borderminx=-\xmax;} else {};
+if \mode==6 then {\bordermaxx=\xmax; \borderminx=-\xmax;} else {};
+if \mode==7 then {\bordermaxx=\xmax; \borderminx=-\xmax;} else {};
+if \mode==8 then {\bordermaxx=\xmax; \borderminx=-\xmax;} else {};
+\borderslope=(\fm-\fy)/(\dm-\dy);
+\qy=\fy-\borderslope*\dy;
+\bordertopmaxy=\qy+\borderslope*\bordermaxx;
+\bordertopminy=\qy+\borderslope*\borderminx;
+\borderbotmaxy=-\qy+\borderslope*\bordermaxx;
+\borderbotminy=-\qy+\borderslope*\borderminx;
+%% Region Text
+\regiontextx=(\dm-\dy)/3+\dy;
+\regiontexty=(\fy)/3;
 }
+
 \begin{scope}[x=1pt, y=1pt, xshift = \startx, yshift=\starty, rotate=0];    % Draw everything in pt units
+
+\ifthenelse{\showshade=1}{
+
+\fill[opacity=\shadeopacity, \shadecolor] (\borderminx, \bordertopminy) -- (\bordermaxx, \bordertopmaxy) --
+(\bordermaxx, \borderbotmaxy) -- (\borderminx, \borderbotminy) -- cycle;
+
+\node[\shadecolor, text width=1.5cm, align=center]  at (\regiontextx,\regiontexty) {Interior\\Region};
+
+}{}
 
 \ifthenelse{\showlinearrows=1}{
 \tikzset{linearrow/.style = {postaction={on each segment={mid arrow=black}}}};
@@ -101,22 +155,25 @@ if \showstiff==0 then {\kpt={};\kst={};} else {};
 }{}
 
 \ifthenelse{\mmp=1}{
-\draw [very thin, dashed] (\dm, 0)--node[at start, inner sep=2pt, outer sep=0pt, anchor=north]{\dmt}(\dm, \fm);
-\draw [very thin, dashed] (0, \fm)--node[at start, inner sep=2pt, outer sep=0pt, anchor=east]{\fmt}(\dm, \fm);
+\draw [very thin, dashed] (\dm, 0)--
+node[at start, inner sep=2pt, outer sep=0pt, anchor=north]{\dmt}(\dm, \fm);
+\draw [very thin, dashed] (0, \fm)--
+node[at start, inner sep=2pt, outer sep=0pt, anchor=east]{\fmt}(\dm, \fm);
 }{}
 
 \ifthenelse{\mode=1}{
-\draw [line width=\axislinet, arrowbe] (-\axsp,0) -- node[at end, anchor=north]{\xlab}(\xmax,0);
-\draw [line width=\axislinet, arrowbe] (0,-\axsp) -- node[at end, anchor=east]{\ylab}(0,\ymax);
+\draw [line width=\axislinet, axesarr] (-\axsp,0) -- node[at end, anchor=south east]{\xlab}(\xmax,0);
+\draw [line width=\axislinet, axesarr] (0,-\axsp) -- node[at end, anchor=north east]{\ylab}(0,\ymax);
 \path [line width=\bilinet, draw=\linecolor, linearrow]
 (0,0)
 -- node[right, midway, behind path, inner sep=2pt, outer sep=0.5pt, anchor=west]{\kpt}(\dy,\fy)
 -- node[below, midway]{\kst}(\dm,\fm);
+
 }{}
 
 \ifthenelse{\mode=2}{
-\draw [line width = \axislinet, arrowbe] (-\axsp,0) -- node[at end, anchor=north]{\xlab}(\xmax,0);
-\draw [line width = \axislinet, arrowbe] (0,-\axsp) -- node[at end, anchor=east]{\ylab}(0,\ymax);
+\draw [line width = \axislinet, axesarr] (-\axsp,0) -- node[at end, anchor=south east]{\xlab}(\xmax,0);
+\draw [line width = \axislinet, axesarr] (0,-\axsp) -- node[at end, anchor=north east]{\ylab}(0,\ymax);
 \path [line width = \bilinet, draw=black, linearrow]
 (0,0)
 -- node[right, midway, behind path, inner sep=2pt, outer sep=0.5pt, anchor=west]{\kpt}(\dy,\fy)
@@ -125,9 +182,10 @@ if \showstiff==0 then {\kpt={};\kst={};} else {};
 }{}
 
 
+
 \ifthenelse{\mode=3}{
-\draw [line width = \axislinet, arrowbe] (-\axsp,0) -- node[at end, anchor=north]{\xlab}(\xmax,0);
-\draw [line width = \axislinet, arrowbe] (0,\lowlevel) -- node[at end, anchor=east]{\ylab}(0,\ymax);
+\draw [line width = \axislinet, axesarr] (-\axsp,0) -- node[at end, anchor=south east]{\xlab}(\xmax,0);
+\draw [line width = \axislinet, twoaxesarr] (0,\lowlevel) -- node[at end, anchor=north east]{\ylab}(0,\ymax);
 \path [line width = \bilinet, draw=black, linearrow]
 (0,0)
 -- node[right, midway, behind path, inner sep=2pt, outer sep=0.5pt, anchor=west]{\kpt}(\dy,\fy)
@@ -136,8 +194,11 @@ if \showstiff==0 then {\kpt={};\kst={};} else {};
 }{}
 
 \ifthenelse{\mode=4}{
-\draw [line width = \axislinet, arrowben] (\dm- 2*\dy -\pyd -\axsp,0) -- node[at end, anchor=north]{\xlab}(\xmax,0);
-\draw [line width = \axislinet, arrowben] (0,\fm -2*\fy -\pyf -\axsp) -- node[at end, anchor=east]{\ylab}(0,\ymax);
+\draw [line width = \axislinet, twoaxesarr] (\modefourx,0) --
+node[at end, anchor=north]{\xlab}(\xmax,0);
+\draw [line width = \axislinet, twoaxesarr] (0,\modefoury) --
+node[at end, anchor=east]{\ylab}(0,\ymax);
+
 \path [line width = \bilinet, draw=black, linearrow] 
 (0,0)
 -- node[right, midway, behind path, inner sep=2pt, outer sep=0.5pt, anchor=west]{\kpt}(\dy,\fy)
@@ -148,8 +209,8 @@ if \showstiff==0 then {\kpt={};\kst={};} else {};
 
 
 \ifthenelse{\mode=5}{
-\draw [line width = \axislinet, arrowben] (-\xmax,0) -- node[at end, anchor=north]{\xlab}(\xmax,0);
-\draw [line width = \axislinet, arrowben] (0,-\ymax) -- node[at end, anchor=east]{\ylab}(0,\ymax);
+\draw [line width = \axislinet, twoaxesarr] (-\xmax,0) -- node[at end, anchor=south east]{\xlab}(\xmax,0);
+\draw [line width = \axislinet, twoaxesarr] (0,-\ymax) -- node[at end, anchor=north east]{\ylab}(0,\ymax);
 \path [line width = \bilinet, draw=black, linearrow] 
 (0,0)
 -- node[right, midway, behind path, inner sep=2pt, outer sep=0.5pt, anchor=west]{\kpt}(\dy,\fy)
@@ -159,8 +220,8 @@ if \showstiff==0 then {\kpt={};\kst={};} else {};
 }{}
 
 \ifthenelse{\mode=6}{
-\draw [line width = \axislinet, arrowben] (-\xmax,0) -- node[at end, anchor=north]{\xlab}(\xmax,0);
-\draw [line width = \axislinet, arrowben] (0,-\ymax) -- node[at end, anchor=east]{\ylab}(0,\ymax);
+\draw [line width = \axislinet, twoaxesarr] (-\xmax,0) -- node[at end, anchor=south east]{\xlab}(\xmax,0);
+\draw [line width = \axislinet, twoaxesarr] (0,-\ymax) -- node[at end, anchor=north east]{\ylab}(0,\ymax);
 \path [line width = \bilinet, draw=black, linearrow] 
 (0,0)
 -- node[right, midway, behind path, inner sep=2pt, outer sep=0.5pt, anchor=west]{\kpt}(\dy,\fy)
@@ -171,8 +232,8 @@ if \showstiff==0 then {\kpt={};\kst={};} else {};
 }{}
 
 \ifthenelse{\mode=7}{
-\draw [line width = \axislinet, arrowben] (-\xmax,0) -- node[at end, anchor=north]{\xlab}(\xmax,0);
-\draw [line width = \axislinet, arrowben] (0,-\ymax) -- node[at end, anchor=east]{\ylab}(0,\ymax);
+\draw [line width = \axislinet, twoaxesarr] (-\xmax,0) -- node[at end, anchor=south east]{\xlab}(\xmax,0);
+\draw [line width = \axislinet, twoaxesarr] (0,-\ymax) -- node[at end, anchor=north east]{\ylab}(0,\ymax);
 \path [line width = \bilinet, draw=black, linearrow] 
 (0,0)
 -- node[right, midway, behind path, inner sep=2pt, outer sep=0.5pt, anchor=west]{\kpt}(\dy,\fy)
@@ -183,8 +244,8 @@ if \showstiff==0 then {\kpt={};\kst={};} else {};
 }{}
 
 \ifthenelse{\mode=8}{
-\draw [line width = \axislinet, arrowben] (-\xmax,0) -- node[at end, anchor=north]{\xlab}(\xmax,0);
-\draw [line width = \axislinet, arrowben] (0,-\ymax) -- node[at end, anchor=east]{\ylab}(0,\ymax);
+\draw [line width = \axislinet, twoaxesarr] (-\xmax,0) -- node[at end, anchor=south east]{\xlab}(\xmax,0);
+\draw [line width = \axislinet, twoaxesarr] (0,-\ymax) -- node[at end, anchor=north east]{\ylab}(0,\ymax);
 \path [line width = \bilinet, draw=\linecolor, linearrow] 
 (0,0)
 -- node[right, midway, behind path, inner sep=2pt, outer sep=0.5pt, anchor=west]{\kpt}(\dy,\fy)
@@ -194,5 +255,31 @@ if \showstiff==0 then {\kpt={};\kst={};} else {};
 -- node[right, midway]{\kpt}++(2*\dy, 2*\fy)
 -- node[below, midway]{\kst}++(\pyd, \pyf) ;
 }{}
+
+\ifthenelse{\showtopborder=1}{
+\draw[line width=\borderlinethk, \borderlinecolor, \borderlinedash, opacity=\borderlineopacity]
+(\borderminx, \bordertopminy) --
+node[above, inner sep=1pt, pos=0.925, sloped, opacity=1, fill=white]{Top Border} (\bordermaxx, \bordertopmaxy);
+}{}
+
+\ifthenelse{\showbotborder=1}{
+\draw[line width=\borderlinethk, \borderlinecolor, \borderlinedash, opacity=\borderlineopacity]
+(\borderminx, \borderbotminy) --
+node[below, inner sep=1pt, pos=0.90, sloped, opacity=1, fill=white]{Bottom Border}(\bordermaxx, \borderbotmaxy);
+}{}
+
+\ifthenelse{\showqy=1}{
+
+\draw[thin](-4pt, \qy) -- (4pt, \qy);
+\fill[] (0, \qy) circle [radius=1pt];
+
+\draw[very thin, dashed] (\dy,\fy) --
+node[at end, inner sep=1pt, anchor=north east, yshift=-2pt]{\qyt}(0,\qy);
+
+}{}
+
+
+
+
 \end{scope}
 }
